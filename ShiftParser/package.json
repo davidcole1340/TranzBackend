@@ -9,7 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "mysql": "^2.18.1",
+    "mongodb": "^3.6.2",
     "pdfreader": "^1.0.7"
   }
 }
