@@ -1,0 +1,99 @@
+#!/usr/bin/env bash
+
+# GTFS Import Script - David Cole <david.cole1340@gmail.com>
+# Downloads the latest GTFS zip from Auckland Transport and loads it into the database.
+
+if [ -z "$2" ]; then
+  echo "Usage: $0 <mongo_host> <mongo_db>"
+  exit 1
+fi
+
+if ! command -v wget &> /dev/null; then
+  echo "wget not found. please install"
+  exit 1;
+fi
+
+if ! command -v unzip &> /dev/null; then
+  echo "unzip not found. please install"
+  exit 1;
+fi
+
+if ! command -v mongoimport &> /dev/null; then
+  echo "mongoimport not found. please install"
+  exit 1;
+fi
+
+downloadGtfs() {
+  mkdir -p gtfs; cd gtfs;
+
+  echo "Downloading Auckland Transport GTFS..."
+  wget -q "https://cdn01.at.govt.nz/data/gtfs.zip" -O gtfs.zip
+
+  if [ $? -ne 0]; then
+    echo "Error downloading GTFS data."
+    exit 1;
+  fi
+
+  echo "Unzipping GTFS..."
+  unzip gtfs.zip
+
+  if [ $? -ne 0]; then
+    echo "Error unzipping GTFS data."
+    exit 1;
+  fi
+
+  echo "Removing unwanted files: calendar.txt, calendar_dates.txt, feed_info.txt, shapes.txt, stop_info.txt"
+  rm calendar.txt calendar_dates.txt feed_info.txt shapes.txt stop_info.txt
+
+  if [ $? -ne 0]; then
+    echo "Error removing unwanted files."
+    exit 1;
+  fi
+
+  cd ..
+}
+
+databaseImport() {
+  cd gtfs;
+  MONGO_URI="mongodb://$1:27017/$2"
+
+  if [[ "$OSTYPE" == "darwin"* ]]; then
+    sed -i '' 's/agency_id/_id/g' agency.txt
+    sed -i '' 's/route_id/_id/g' routes.txt
+    sed -i '' 's/stop_id/_id/g' stops.txt
+    sed -i '' 's/trip_id/_id/g' trips.txt
+  else
+    sed -i 's/agency_id/_id/g' agency.txt
+    sed -i 's/route_id/_id/g' routes.txt
+    sed -i 's/stop_id/_id/g' stops.txt
+    sed -i 's/trip_id/_id/g' trips.txt
+  fi
+
+  head -n 1 agency.txt
+  head -n 1 routes.txt
+  head -n 1 stops.txt
+  head -n 1 trips.txt
+
+  echo "Importing into database with URI \`$MONGO_URI\`"
+
+  for F in *.txt; do
+    COLLEC=${F%.*}
+    echo "Importing '$F' into $COLLEC"
+
+    mongoimport --type csv -d $2 -c $COLLEC --headerline --drop $MONGO_URI $F
+  done
+}
+
+if [ -d "gtfs" ]; then
+  while true; do
+    read -p "GTFS folder found. Do you still want to download the latest version? " yn
+    case $yn in
+      [Yy]* ) rm -rf gtfs; downloadGtfs; databaseImport $1 $2; break;;
+      [Nn]* ) databaseImport $1 $2; break;;
+      * ) echo "Please answer yes or no.";;
+    esac
+  done
+else
+  downloadGtfs
+  databaseImport $1 $2
+fi
