@@ -1,0 +1,46 @@
+type Query {
+  shifts(): [Shift]
+  shift(id: String!): Shift
+}
+
+enum ShiftType {
+  WEEKDAY
+  WEEKEND
+  WEEKDAY_SCHOOLHOL
+}
+
+type Shift {
+  _id: String!
+  hours_worked: Float!
+  type: ShiftType!
+  splits: [Split]
+}
+
+type Split {
+  _id: String!
+  sign_on: String!
+  sign_off: String!
+  shift_id: String!
+  shift: Shift!
+  trips: [Trip]
+  breaks: [Break]
+}
+
+type Trip {
+  _id: String!
+  split_id: String!
+  destination: String
+  route: String
+  route_id: String
+  time: String!
+  split: Split!
+}
+
+type Break {
+  _id: String!
+  split_id: String!
+  start: String!
+  finish: String!
+  paid: Boolean!
+  split: Split!
+}
