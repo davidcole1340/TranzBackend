@@ -7,7 +7,7 @@ export default (db: Db): IResolvers => ({
       return db.collection('shifts').find({}).toArray()
     },
 
-    shift: (parent, args) => {
+    shift: (_, args) => {
       return db.collection('shifts').find({
         _id: args.id
       }).toArray().then(shifts => shifts[0])

@@ -1,5 +1,6 @@
 extend type Query {
   routes: [Route]!
+  trip(id: String): GTFSTrip
 }
 
 type Route {
@@ -10,6 +11,8 @@ type Route {
   route_short_name: String
   route_text_color: String
   route_type: Int
+
+  trips: [GTFSTrip]!
 }
 
 type GTFSTrip {
@@ -22,6 +25,7 @@ type GTFSTrip {
   trip_headsign: String
 
   route: Route!
+  stop_times: [StopTime]!
 }
 
 type StopTime {
