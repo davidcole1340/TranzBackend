@@ -1,18 +1,12 @@
 type Query {
-  shifts(): [Shift]
+  shifts: [Shift]
   shift(id: String!): Shift
-}
-
-enum ShiftType {
-  WEEKDAY
-  WEEKEND
-  WEEKDAY_SCHOOLHOL
 }
 
 type Shift {
   _id: String!
   hours_worked: Float!
-  type: ShiftType!
+  type: Int!
   splits: [Split]
 }
 

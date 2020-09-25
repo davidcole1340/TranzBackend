@@ -17,7 +17,6 @@ import express from "express"
 import {
   graphqlHTTP
 } from "express-graphql"
-import { buildSchema } from "graphql"
 import fs from "fs"
 import { MongoClient } from "mongodb";
 import getResolvers from "./resolvers"
@@ -40,4 +39,4 @@ MongoClient.connect(uri, { useUnifiedTopology: true }).then((client) => {
   }))
 
   app.listen(TRANZQL_PORT, () => console.log(`Listening on port ${TRANZQL_PORT}`))
-})
+}).catch(console.error)
