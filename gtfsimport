@@ -47,8 +47,8 @@ downloadGtfs() {
     exit 1;
   fi
 
-  echo "Removing unwanted files: calendar.txt, calendar_dates.txt, feed_info.txt, shapes.txt, stop_info.txt"
-  rm calendar.txt calendar_dates.txt feed_info.txt shapes.txt stop_info.txt
+  echo "Removing unwanted files: calendar_dates.txt, feed_info.txt, shapes.txt, stop_info.txt"
+  rm calendar_dates.txt feed_info.txt shapes.txt stop_info.txt
 
   if [ $? -ne 0]; then
     echo "Error removing unwanted files."
@@ -67,11 +67,13 @@ databaseImport() {
     sed -i '' 's/route_id/_id/g' routes.txt
     sed -i '' 's/stop_id/_id/g' stops.txt
     sed -i '' 's/trip_id/_id/g' trips.txt
+    sed -i '' 's/service_id/_id/g' calendar.txt
   else
     sed -i 's/agency_id/_id/g' agency.txt
     sed -i 's/route_id/_id/g' routes.txt
     sed -i 's/stop_id/_id/g' stops.txt
     sed -i 's/trip_id/_id/g' trips.txt
+    sed -i 's/service_id/_id/g' calendar.txt
   fi
 
   echo "Importing into database with URI \`$MONGO_URI\`"
