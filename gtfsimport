@@ -84,10 +84,12 @@ databaseImport() {
 
     mongoimport --type csv -d $2 -c $COLLEC --headerline --drop $MONGO_URI $F
   done
-
+  
+  cd ..
   echo "Running cleanup script..."
 
-  mongo "$MONGO_URI" ../cleanDatabase.js
+  mongo "$MONGO_URI" cleanDatabase.js
+  rm -rf gtfs
 }
 
 if [ -d "gtfs" ]; then

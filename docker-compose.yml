@@ -6,6 +6,14 @@ services:
     restart: always
     ports:
       - '8080:8080'
+    links:
+      - mongo
+    environment:
+      - NODE_ENV=development
+      - TRANZQL_PORT=8080
+      - MONGO_HOST=mongo
+      - MONGO_DB=tranzurban
+      - MONGO_GTFS_DB=gtfs
   mongo:
     image: mongo
     ports:
