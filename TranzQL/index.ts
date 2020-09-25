@@ -2,6 +2,7 @@ declare var process: {
   env: {
     MONGO_HOST: string,
     MONGO_DB: string,
+    MONGO_GTFS_DB: string,
     TRANZQL_PORT: number,
     NODE_ENV: 'development' | 'production'
   }
@@ -10,6 +11,7 @@ declare var process: {
 const {
   MONGO_HOST,
   MONGO_DB,
+  MONGO_GTFS_DB,
   TRANZQL_PORT
 } = process.env;
 
@@ -19,16 +21,22 @@ import {
 } from "express-graphql"
 import fs from "fs"
 import { MongoClient } from "mongodb";
-import getResolvers from "./resolvers"
-import { makeExecutableSchema } from "graphql-tools";
+import tranzResolvers from "./resolvers/tranz"
+import gtfsResolvers from "./resolvers/gtfs"
+import { IResolvers, makeExecutableSchema } from "graphql-tools";
 
 const app = express();
 const uri = `mongodb://${MONGO_HOST}:27017`;
 
 MongoClient.connect(uri, { useUnifiedTopology: true }).then((client) => {
-  const db = client.db(MONGO_DB);
+  const tranzDb = client.db(MONGO_DB);
+  const gtfsDb = client.db(MONGO_GTFS_DB);
+
   const typeDefs = fs.readFileSync('./schema.graphql').toString()
-  const resolvers = getResolvers(db)
+  const resolvers: IResolvers = {
+    ...tranzResolvers(tranzDb),
+    ...gtfsResolvers(gtfsDb)
+  };
 
   app.use('/graphql', graphqlHTTP({
     graphiql: process.env.NODE_ENV === 'development',
