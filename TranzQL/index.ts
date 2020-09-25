@@ -25,6 +25,7 @@ import { MongoClient } from "mongodb";
 import tranzResolvers from "./resolvers/tranz"
 import gtfsResolvers from "./resolvers/gtfs"
 import { IResolvers, makeExecutableSchema } from "graphql-tools";
+import merge from "lodash.merge"
 
 const app = express();
 const uri = `mongodb://${MONGO_HOST}:27017`;
@@ -44,10 +45,7 @@ MongoClient.connect(uri, { useUnifiedTopology: true }).then((client) => {
     return content;
   })();
 
-  const resolvers: IResolvers = {
-    ...tranzResolvers(tranzDb, gtfsDb),
-    ...gtfsResolvers(tranzDb, gtfsDb)
-  };
+  const resolvers: IResolvers = merge(tranzResolvers(tranzDb, gtfsDb), gtfsResolvers(tranzDb, gtfsDb));
 
   app.use('/graphql', graphqlHTTP({
     graphiql: process.env.NODE_ENV === 'development',
