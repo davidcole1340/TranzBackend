@@ -32,7 +32,17 @@ MongoClient.connect(uri, { useUnifiedTopology: true }).then((client) => {
   const tranzDb = client.db(MONGO_DB);
   const gtfsDb = client.db(MONGO_GTFS_DB);
 
-  const typeDefs = fs.readFileSync('./schema.graphql').toString()
+  const typeDefs: string = (() => {
+    const files = fs.readdirSync('./schema')
+    let content = '';
+
+    for (const file of files) {
+      content += fs.readFileSync('./schema/'+file).toString()
+    }
+
+    return content;
+  })();
+
   const resolvers: IResolvers = {
     ...tranzResolvers(tranzDb),
     ...gtfsResolvers(gtfsDb)

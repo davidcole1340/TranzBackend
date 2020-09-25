@@ -1,0 +1,53 @@
+extend type Query {
+  routes: [Route]!
+}
+
+type Route {
+  _id: String!
+  agency_id: String!
+  route_color: String
+  route_long_name: String
+  route_short_name: String
+  route_text_color: String
+  route_type: Int
+}
+
+type GTFSTrip {
+  _id: String!
+  block_id: String
+  direction_id: Int!
+  route_id: String!
+  service_id: String!
+  shape_id: String
+  trip_headsign: String
+
+  route: Route!
+}
+
+type StopTime {
+  _id: ID!
+  arrival_time: String!
+  departure_time: String!
+  drop_off_type: String
+  pickup_type: String!
+  shape_dist_traveled: String
+  stop_headsign: String
+  stop_id: String!
+  stop_sequence: String
+  trip_id: String!
+
+  trip: GTFSTrip!
+  stop: Stop!
+}
+
+type Stop {
+  _id: String!
+  location_type: Int
+  parent_station: String
+  stop_code: Int
+  stop_desc: String
+  stop_lat: Float!
+  stop_lon: Float!
+  stop_name: String
+  zone_id: String
+}
