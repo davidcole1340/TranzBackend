@@ -3,6 +3,17 @@ extend type Query {
   trip(id: String): GTFSTrip
 }
 
+type Calendar {
+  _id: String!
+  monday: Boolean!
+  tuesday: Boolean!
+  wednesday: Boolean!
+  thursday: Boolean!
+  friday: Boolean!
+  saturday: Boolean!
+  sunday: Boolean!
+}
+
 type Route {
   _id: String!
   agency_id: String!
@@ -26,6 +37,7 @@ type GTFSTrip {
 
   route: Route!
   stop_times: [StopTime]!
+  shift: Shift
 }
 
 type StopTime {

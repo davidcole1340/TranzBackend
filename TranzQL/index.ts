@@ -4,6 +4,7 @@ declare var process: {
     MONGO_DB: string,
     MONGO_GTFS_DB: string,
     TRANZQL_PORT: number,
+    HOLIDAY_TIMETABLE: string,
     NODE_ENV: 'development' | 'production'
   }
 }
@@ -44,8 +45,8 @@ MongoClient.connect(uri, { useUnifiedTopology: true }).then((client) => {
   })();
 
   const resolvers: IResolvers = {
-    ...tranzResolvers(tranzDb),
-    ...gtfsResolvers(gtfsDb)
+    ...tranzResolvers(tranzDb, gtfsDb),
+    ...gtfsResolvers(tranzDb, gtfsDb)
   };
 
   app.use('/graphql', graphqlHTTP({
