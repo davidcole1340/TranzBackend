@@ -14,6 +14,15 @@ services:
       - MONGO_HOST=mongo
       - MONGO_DB=tranzurban
       - MONGO_GTFS_DB=gtfs
+  watch:
+    build: ./Migrator
+    restart: always
+    links:
+      - mongo
+    environment:
+      - MONGO_HOST=mongo
+      - MONGO_GTFS_DB=gtfs
+      - AT_API_KEY=dcefb8b705d24f1cbf22dc47599eb69d
   mongo:
     image: mongo
     ports:

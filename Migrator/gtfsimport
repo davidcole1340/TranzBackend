@@ -88,7 +88,7 @@ databaseImport() {
   cd ..
   echo "Running cleanup script..."
 
-  mongo "$MONGO_URI" cleanDatabase.js
+  node cleanDatabase.js $1 $2
   rm -rf gtfs
 }
 

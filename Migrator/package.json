@@ -4,11 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "start:watch": "node watch.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bent": "^7.3.10",
     "mongodb": "^3.6.2",
     "pdfreader": "^1.0.7"
   }
