@@ -5,6 +5,7 @@ declare var process: {
     MONGO_GTFS_DB: string,
     TRANZQL_PORT: number,
     HOLIDAY_TIMETABLE: string,
+    AT_API_KEY: string,
     NODE_ENV: 'development' | 'production'
   }
 }
@@ -22,8 +23,7 @@ import {
 } from "express-graphql"
 import fs from "fs"
 import { MongoClient } from "mongodb";
-import tranzResolvers from "./resolvers/tranz"
-import gtfsResolvers from "./resolvers/gtfs"
+import { tranzResolvers, gtfsResolvers, getBusData } from './resolvers'
 import { IResolvers, makeExecutableSchema } from "graphql-tools";
 import merge from "lodash.merge"
 
@@ -54,6 +54,16 @@ MongoClient.connect(uri, { useUnifiedTopology: true }).then((client) => {
       resolvers
     })
   }))
+
+  app.get('/vehicles', (req, res) => {
+    getBusData().then(data => {
+      res.send(data);
+    }).catch(e => {
+      res.status(500).send({
+        error: e
+      });
+    });
+  });
 
   app.listen(TRANZQL_PORT, () => console.log(`Listening on port ${TRANZQL_PORT}`))
 }).catch(console.error)

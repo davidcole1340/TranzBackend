@@ -16,7 +16,7 @@ interface Calendar {
   sunday: boolean
 }
 
-export default (tranzDb: Db, db: Db): IResolvers => ({
+export const gtfsResolvers = (tranzDb: Db, db: Db): IResolvers => ({
   Query: {
     routes: () => {
       return db.collection('routes').find({}).toArray()

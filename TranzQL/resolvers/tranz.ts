@@ -1,7 +1,7 @@
 import { IResolvers } from "graphql-tools";
 import { Db } from "mongodb";
 
-export default (db: Db, gtfsDb: Db): IResolvers => ({
+export const tranzResolvers = (db: Db, gtfsDb: Db): IResolvers => ({
   Query: {
     shifts: () => {
       return db.collection('shifts').find({}).toArray()
