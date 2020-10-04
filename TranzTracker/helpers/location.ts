@@ -5,13 +5,14 @@ import { Region } from 'react-native-maps'
  * Gets the devices current location. If permission is denied,
  * throw an error.
  */
-export async function GetLocation(): Promise<Region> {
+export async function getLocation(): Promise<Region> {
   const { status } = await ExpoLocation.requestPermissionsAsync();
   if (status !== 'granted') {
     throw new Error('Did not get permission to get location.')
   }
 
   const location = await ExpoLocation.getCurrentPositionAsync({});
+  console.log(location.coords)
   return {
     latitude: location.coords.latitude,
     longitude: location.coords.longitude,
