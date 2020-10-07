@@ -58,9 +58,9 @@ MongoClient.connect(uri, { useUnifiedTopology: true }).then((client) => {
   app.get('/vehicles', (req, res) => {
     getBusData().then(data => {
       res.send(data);
-    }).catch(e => {
+    }).catch((e: Error) => {
       res.status(500).send({
-        error: e
+        error: e.message
       });
     });
   });

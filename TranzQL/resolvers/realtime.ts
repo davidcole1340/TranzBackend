@@ -117,7 +117,7 @@ export const getBusData = async (): Promise<BusData[]> => {
   tripUpdates.response.entity.forEach(update => {
     // Find corresponding vehicle position
     const position = positionUpdates.response.entity.find((pos) => {
-      return pos.vehicle.trip.trip_id == update.trip_update.trip.trip_id
+      return pos.vehicle.vehicle.id == update.trip_update.vehicle.id
     });
 
     if (position !== undefined) {
