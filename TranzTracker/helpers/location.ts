@@ -12,7 +12,6 @@ export async function getLocation(): Promise<Region> {
   }
 
   const location = await ExpoLocation.getCurrentPositionAsync({});
-  console.log(location.coords)
   return {
     latitude: location.coords.latitude,
     longitude: location.coords.longitude,

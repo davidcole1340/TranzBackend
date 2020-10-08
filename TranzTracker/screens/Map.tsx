@@ -1,16 +1,31 @@
 import React from 'react'
-import MapView, { Marker, Region } from 'react-native-maps'
+import MapView from 'react-native-maps'
 
+import { RouteProp } from '@react-navigation/native'
+import { StackNavigationProp } from '@react-navigation/stack'
+
+import { BusData } from '../interfaces'
 import { Map as Styles } from '../styles'
 import * as Location from '../helpers/location'
 import * as Api from '../api'
 
-interface State {
-  buses: Api.BusData[]
+import { BusMarker } from '../components'
+import { BaseStackParamList } from '../navigators'
+
+export type MapNavigation = StackNavigationProp<BaseStackParamList, 'Map'>
+type MapRoute = RouteProp<BaseStackParamList, 'Map'>
+
+type MapProps = {
+  navigation: MapNavigation,
+  route: MapRoute
 }
 
-export class Map extends React.Component<{}, State> {
-  state = {
+type MapState = {
+  buses: BusData[]
+}
+
+export class Map extends React.Component<MapProps, MapState> {
+  state: MapState = {
     buses: []
   }
 
@@ -18,26 +33,19 @@ export class Map extends React.Component<{}, State> {
 
   componentDidMount() {
     if (this.map !== null) {
-      // Get location and set. If it can't be found, use default.
+      // Get location and set. If it can't be found, do nothing.
       Location.getLocation()
       .then(region => this.map?.animateToRegion(region))
       .catch()
     }
 
-    Api.getVehicleLocations()
-    .then(buses => this.setState({ buses: buses }))
-    .catch(e => alert(e.message))
+    this.updateVehicleLocations()
   }
 
-  renderBus(bus: Api.BusData) {
-    return (
-      <Marker
-        key={bus.vehicle.id}
-        coordinate={bus.position}
-        title={bus.vehicle.id}
-        description={bus.trip.trip_id}
-      />
-    );
+  updateVehicleLocations() {
+    Api.getVehicleLocations()
+    .then((buses: BusData[]) => this.setState({ buses: buses }))
+    .catch((e: Error) => alert(e.message))
   }
 
   render() {
@@ -52,7 +60,9 @@ export class Map extends React.Component<{}, State> {
           longitudeDelta: 0.0421
         }}
       >
-        {this.state.buses.map(this.renderBus.bind(this))}
+        {this.state.buses.map((bus: BusData) => (
+          <BusMarker key={bus.vehicle.id} bus={bus} navigation={this.props.navigation} />
+        ))}
       </MapView>
     )
   }

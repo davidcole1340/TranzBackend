@@ -1,58 +1,34 @@
-const BASE_API = 'http://192.168.86.163:8080'
+import { BusData } from './interfaces'
+import { TripQuery } from './interfaces/queries'
 
-interface TripUpdate_Update {
-  trip: Trip,
-  stop_time_update: StopTimeUpdate,
-  vehicle: Vehicle,
-  timestamp: number,
-  delay: number
+const BASE_API = 'http://172.23.138.210:8080'
+
+async function callGraphql<T>(query: string): Promise<T> {
+  const resp = await fetch(`${BASE_API}/graphql?query=${query}`)
+  const json = await resp.json()
+  return json.data
 }
-
-interface VehiclePosition_Vehicle {
-  trip: Trip,
-  position: Position,
-  timestamp: number,
-  vehicle: Vehicle,
-  occupancy_status: number
-}
-
-interface Trip {
-  trip_id: string,
-  start_time: string,
-  start_date: string,
-  schedule_relationship: number,
-  route_id: string,
-  direction_id: number
-}
-
-interface StopTimeUpdate {
-  stop_sequence: number,
-  arrival: {
-    delay: number,
-    time: number,
-    uncertainty: number
-  },
-  stop_id: string,
-  schedule_relationship: number
-}
-
-interface Vehicle {
-  id: string,
-  label: string,
-  license_plate: string
-}
-
-interface Position {
-  latitude: number,
-  longitude: number,
-  bearing: number,
-  odometer: number,
-  speed: number
-}
-
-export interface BusData extends TripUpdate_Update, VehiclePosition_Vehicle {}
 
 export async function getVehicleLocations(): Promise<BusData[]> {
   const resp = await fetch(`${BASE_API}/vehicles`)
   return resp.json()
+}
+
+export async function getBusStops(bus: BusData): Promise<TripQuery> {
+  return callGraphql<TripQuery>(`{
+  trip(id: "${bus.trip.trip_id}") {
+    shift {
+      _id
+    }
+    stop_times {
+      arrival_time
+      stop {
+        stop_name
+        stop_lat
+        stop_lon
+      }
+      stop_sequence
+    }
+  }
+  }`);
 }
