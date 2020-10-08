@@ -3,7 +3,8 @@ import React from 'react'
 import { BusData } from '../interfaces';
 
 import { Map } from '../screens'
-import { BusInfo } from '../screens/BusInfo';
+
+import { BusInfo } from './BusInfo'
 
 export type BaseStackParamList = {
   Map: undefined,

@@ -1,7 +1,7 @@
 import { BusData } from './interfaces'
 import { TripQuery } from './interfaces/queries'
 
-const BASE_API = 'http://172.23.138.210:8080'
+const BASE_API = 'http://127.0.0.1:8080'
 
 async function callGraphql<T>(query: string): Promise<T> {
   const resp = await fetch(`${BASE_API}/graphql?query=${query}`)

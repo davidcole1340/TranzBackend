@@ -13,13 +13,12 @@ import { getBusDelay, getBusDirection } from "../helpers";
 import { getBusStops } from "../api";
 import { TripQuery } from "../interfaces/queries";
 import { GTFSTrip } from "../interfaces/gtfs";
-import { stopLocationUpdatesAsync } from "expo-location";
 
 type BusInfoNavigator = StackNavigationProp<BaseStackParamList, 'BusInfo'>
 type BusInfoRoute = RouteProp<BaseStackParamList, 'BusInfo'>
 
 type BusInfoProps = {
-  navigator: BusInfoNavigator,
+  navigation: BusInfoNavigator,
   route: BusInfoRoute
 }
 
@@ -28,7 +27,7 @@ type BusInfoState = {
   tripInfo?: GTFSTrip
 }
 
-export class BusInfo extends React.Component<BusInfoProps, BusInfoState> {
+export class TripInfo extends React.Component<BusInfoProps, BusInfoState> {
   state: BusInfoState = {
     isLoading: true
   }
@@ -63,7 +62,7 @@ export class BusInfo extends React.Component<BusInfoProps, BusInfoState> {
     if (this.state.isLoading) {
       return (
         <View style={Page.spinner}>
-          <ActivityIndicator size={'large'} />
+          <ActivityIndicator size="large" />
         </View>
       )
     }
@@ -101,6 +100,7 @@ export class BusInfo extends React.Component<BusInfoProps, BusInfoState> {
   }
 
   render() {
+    console.log(this.props)
     const bus: BusData = this.props.route.params.bus;
 
     return (
