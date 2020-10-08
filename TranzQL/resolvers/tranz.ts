@@ -8,9 +8,9 @@ export const tranzResolvers = (db: Db, gtfsDb: Db): IResolvers => ({
     },
 
     shift: (_, args) => {
-      return db.collection('shifts').find({
+      return db.collection('shifts').findOne({
         _id: args.id
-      }).toArray().then(shifts => shifts[0])
+      })
     } 
   },
 
@@ -32,7 +32,7 @@ export const tranzResolvers = (db: Db, gtfsDb: Db): IResolvers => ({
     trips: (split) => {
       return db.collection('trips').find({
         split_id: split._id
-      }).toArray()
+      }).sort({ time: 1 }).toArray()
     },
 
     breaks: (split) => {
@@ -44,17 +44,17 @@ export const tranzResolvers = (db: Db, gtfsDb: Db): IResolvers => ({
 
   Trip: {
     split: (trip) => {
-      return db.collection('splits').find({
+      return db.collection('splits').findOne({
         _id: trip.split_id
-      }).toArray().then(trips => trips[0])
+      })
     }
   },
 
   Break: {
     split: (_break) => {
-      return db.collection('splits').find({
+      return db.collection('splits').findOne({
         _id: _break.split_id
-      }).toArray().then(trips => trips[0])
+      })
     }
   }
 })
