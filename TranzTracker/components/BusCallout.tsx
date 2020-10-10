@@ -4,6 +4,7 @@ import { Text } from 'react-native'
 import { Callout } from 'react-native-maps';
 import { BusData } from '../interfaces';
 import { MapNavigation } from '../screens';
+import { grey, isDark, Page } from '../styles';
 
 interface BusCalloutProps {
   bus: BusData,
@@ -15,8 +16,10 @@ interface BusCalloutState {}
 export class BusCallout extends React.Component<BusCalloutProps, BusCalloutState> {
   render() {
     return (
-      <Callout onPress={() => this.props.navigation.navigate('BusInfo', { bus: this.props.bus })}>
-        <Text>{this.props.bus.vehicle.label}</Text>
+      <Callout tooltip={true} style={{
+        backgroundColor: isDark ? grey : 'white'
+      }} onPress={() => this.props.navigation.navigate('BusInfo', { bus: this.props.bus })}>
+        <Text style={Page.text}>{this.props.bus.vehicle.label}</Text>
       </Callout>
     )
   }

@@ -1,4 +1,9 @@
 import { StyleProp, StyleSheet, ViewStyle } from 'react-native'
+import { Appearance } from 'react-native-appearance';
+
+const scheme = Appearance.getColorScheme()
+export const grey = '#7C7C7D'
+export const isDark = scheme === 'dark'
 
 export const Map = StyleSheet.create({
   container: {
@@ -12,9 +17,8 @@ export const Map = StyleSheet.create({
 
 export const Page = StyleSheet.create({
   container: {
-    ...StyleSheet.absoluteFillObject,
-    padding: 6,
-    flex: 1
+    flex: 1,
+    padding: 10
   },
   spinner: {
     flexDirection: 'row',
@@ -22,22 +26,42 @@ export const Page = StyleSheet.create({
     padding: 10
   },
   title: {
+    color: isDark ? 'white' : 'black',
     fontWeight: 'bold',
     fontSize: 20,
     margin: 6
   },
   text: {
+    color: isDark ? 'white' : 'black',
     margin: 6
   }
 })
 
 export const Table = StyleSheet.create({
   border: {
-    borderWidth: 2,
-    borderColor: '#000000'
+    borderColor: isDark ? 'white' : 'black',
+    borderWidth: 2
   },
   header: {
-    height: 40,
-    backgroundColor: '#ffffff'
+    backgroundColor: 'white',
+    height: 40
+  },
+  headerText: {
+    ...Page.text,
+    color: isDark ? 'black' : 'white'
+  }
+})
+
+export const Title = StyleSheet.create({
+  container: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    width: '100%'
+  },
+  buttonContainer: {
+    flex: 1,
+    paddingLeft: 20
   }
 })

@@ -5,6 +5,7 @@ import { BusData } from '../interfaces'
 import { Marker, MarkerProps } from 'react-native-maps'
 import { BusCallout } from './BusCallout'
 import { MapNavigation } from '../screens'
+import { grey, isDark } from '../styles'
 
 interface BusMarkerProps {
   bus: BusData,
@@ -15,7 +16,7 @@ interface BusMarkerState {}
 
 export class BusMarker extends React.Component<BusMarkerProps, BusMarkerState> {
   getMarkerColor(): string {
-    if (this.props.bus.occupancy_status < 1) return 'black'
+    if (this.props.bus.occupancy_status < 1) return isDark ? grey : 'black'
     else if (this.props.bus.occupancy_status < 2) return 'green'
     else if (this.props.bus.occupancy_status < 3) return 'orange';
 

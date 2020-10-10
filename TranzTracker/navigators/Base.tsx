@@ -1,5 +1,6 @@
 import { createStackNavigator } from '@react-navigation/stack'
 import React from 'react'
+import { TitleButtons } from '../components';
 import { BusData } from '../interfaces';
 
 import { Map } from '../screens'
@@ -16,7 +17,7 @@ export function Base() {
 
   return (
     <Stack.Navigator initialRouteName="Map">
-      <Stack.Screen name="Map" component={Map} options={{ headerShown: false }} />
+      <Stack.Screen name="Map" component={Map} options={{ title: '', headerLeft: (props) => <TitleButtons stackProps={props} /> }} />
       <Stack.Screen name="BusInfo" component={BusInfo} />
     </Stack.Navigator>
   )

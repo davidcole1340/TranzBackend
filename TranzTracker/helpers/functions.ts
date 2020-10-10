@@ -1,4 +1,6 @@
+import moment from "moment";
 import { BusData } from "../interfaces";
+import { Break, Trip } from "../interfaces/tranzit";
 
 enum BusDirection {
   City = 0,
@@ -50,4 +52,20 @@ export function getBusDirection(bus: BusData): string {
   }
 
   return '';
+}
+
+export function getTime(a: Trip|Break, start: boolean = true): moment.Moment {
+  const time = (() => {
+    if ((a as Trip).time) {
+      return (a as Trip).time
+    } else {
+      if (start) {
+        return (a as Break).start
+      } else {
+        return (a as Break).finish
+      }
+    }
+  })()
+
+  return moment(time, 'hhmm')
 }
