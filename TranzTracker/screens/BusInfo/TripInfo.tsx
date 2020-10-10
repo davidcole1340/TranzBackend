@@ -6,14 +6,14 @@ import { Row, Rows, Table } from 'react-native-table-component'
 import { RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 
-import { BusInfoParamList } from "../navigators";
-import { Page, Table as TableStyle } from '../styles'
-import { BusData } from "../interfaces";
-import { getBusDelay, getBusDirection } from "../helpers";
-import { getBusStops } from "../api";
-import { TripQuery } from "../interfaces/queries";
-import { GTFSTrip } from "../interfaces/gtfs";
-import { Spinner } from "../components";
+import { BusInfoParamList } from "../../navigators";
+import { Page, Table as TableStyle } from '../../styles'
+import { BusData } from "../../interfaces";
+import { getBusDelay, getBusDirection } from "../../helpers";
+import { getBusStops } from "../../api";
+import { TripQuery } from "../../interfaces/queries";
+import { GTFSTrip } from "../../interfaces/gtfs";
+import { Spinner } from "../../components";
 
 type TripInfoNavigator = StackNavigationProp<BusInfoParamList, 'Trip'>
 type TripInfoRoute = RouteProp<BusInfoParamList, 'Trip'>

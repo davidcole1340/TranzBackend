@@ -5,9 +5,10 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { BaseStackParamList } from '.';
 import { RouteProp } from '@react-navigation/native';
 import { BusData } from '../interfaces';
-import { ShiftInfo } from '../screens/ShiftInfo';
+import { ShiftInfo } from '../screens/BusInfo/ShiftInfo';
 import { GTFSTrip } from '../interfaces/gtfs';
 import { Ionicons } from '@expo/vector-icons';
+import { getIcon } from '../helpers';
 
 type BusInfoNavigator = StackNavigationProp<BaseStackParamList, 'BusInfo'>
 type BusInfoRoute = RouteProp<BaseStackParamList, 'BusInfo'>
@@ -23,14 +24,6 @@ export type BusInfoParamList = {
   },
   Shift: {
     bus: BusData
-  }
-}
-
-const getIcon = (icon: string) => {
-  return (props: { focused: boolean, color: string, size: number }): React.ReactNode => {
-    return (
-      <Ionicons name={icon} color={props.color} size={props.size} />
-    )
   }
 }
 

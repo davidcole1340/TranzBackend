@@ -1,3 +1,5 @@
+import React from 'react';
+import { Ionicons } from "@expo/vector-icons";
 import moment from "moment";
 import { BusData } from "../interfaces";
 import { Break, Trip } from "../interfaces/tranzit";
@@ -68,4 +70,12 @@ export function getTime(a: Trip|Break, start: boolean = true): moment.Moment {
   })()
 
   return moment(time, 'hhmm')
+}
+
+export const getIcon = (icon: string) => {
+  return (props: { focused: boolean, color: string, size: number }): React.ReactNode => {
+    return (
+      <Ionicons name={icon} color={props.color} size={props.size} />
+    )
+  }
 }

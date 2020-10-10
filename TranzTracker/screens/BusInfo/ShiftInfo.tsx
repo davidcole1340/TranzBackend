@@ -5,12 +5,12 @@ import React from 'react';
 import { Text, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { Row, Rows, Table } from 'react-native-table-component';
-import { getShift } from '../api';
-import { Spinner } from '../components';
-import { getTime } from '../helpers';
-import { Break, Shift, Split, Trip } from '../interfaces/tranzit';
-import { BusInfoParamList } from '../navigators';
-import { Page, Table as TableStyle } from '../styles';
+import { getShift } from '../../api';
+import { Spinner } from '../../components';
+import { getTime } from '../../helpers';
+import { Break, Shift, Split, Trip } from '../../interfaces/tranzit';
+import { BusInfoParamList } from '../../navigators';
+import { Page, Table as TableStyle } from '../../styles';
 
 type ShiftInfoNavigator = StackNavigationProp<BusInfoParamList, 'Shift'>
 type ShiftInfoRoute = RouteProp<BusInfoParamList, 'Shift'>

@@ -7,27 +7,22 @@ import { StackNavigationProp } from '@react-navigation/stack'
 import { BusData } from '../interfaces'
 import { Map as Styles } from '../styles'
 import * as Location from '../helpers/location'
-import * as Api from '../api'
 
 import { BusMarker } from '../components'
-import { BaseStackParamList } from '../navigators'
+import { MapStackParamList } from '../navigators'
+import { BusListContext } from '../context/BusListContext'
 
-export type MapNavigation = StackNavigationProp<BaseStackParamList, 'Map'>
-type MapRoute = RouteProp<BaseStackParamList, 'Map'>
+export type MapNavigation = StackNavigationProp<MapStackParamList, 'Map'>
+type MapRoute = RouteProp<MapStackParamList, 'Map'>
 
 type MapProps = {
   navigation: MapNavigation,
   route: MapRoute
 }
 
-type MapState = {
-  buses: BusData[]
-}
-
-export class Map extends React.Component<MapProps, MapState> {
-  state: MapState = {
-    buses: []
-  }
+export class Map extends React.Component<MapProps> {
+  static contextType = BusListContext
+  context!: React.ContextType<typeof BusListContext>
 
   map: MapView | null = null;
 
@@ -38,14 +33,6 @@ export class Map extends React.Component<MapProps, MapState> {
       .then(region => this.map?.animateToRegion(region))
       .catch()
     }
-
-    this.updateVehicleLocations()
-  }
-
-  updateVehicleLocations() {
-    Api.getVehicleLocations()
-    .then((buses: BusData[]) => this.setState({ buses: buses }))
-    .catch((e: Error) => alert(e.message))
   }
 
   render() {
@@ -60,7 +47,7 @@ export class Map extends React.Component<MapProps, MapState> {
           longitudeDelta: 0.0421
         }}
       >
-        {this.state.buses.map((bus: BusData) => (
+        {this.context.buses.map((bus: BusData) => (
           <BusMarker key={bus.vehicle.id} bus={bus} navigation={this.props.navigation} />
         ))}
       </MapView>
