@@ -48,7 +48,7 @@ export const Table = StyleSheet.create({
   },
   headerText: {
     ...Page.text,
-    color: isDark ? 'black' : 'white'
+    color: 'black'
   }
 })
 
@@ -63,5 +63,32 @@ export const Title = StyleSheet.create({
   buttonContainer: {
     flex: 1,
     paddingLeft: 20
+  }
+})
+
+export const List = StyleSheet.create({
+  container: {
+    padding: 10
+  },
+  item: {
+    width: '100%',
+    flex: 1,
+    flexDirection: 'column',
+    marginBottom: 4,
+    borderColor: isDark ? 'white' : 'black',
+    borderWidth: 1.5,
+    borderRadius: 5
+  },
+  title: {
+    ...Page.title,
+    fontSize: 15,
+    flex: 1,
+    flexDirection: 'column'
+  },
+  text: {
+    ...Page.text,
+    margin: 4,
+    flex: 1,
+    flexDirection: 'column'
   }
 })

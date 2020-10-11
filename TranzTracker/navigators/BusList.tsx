@@ -6,7 +6,7 @@ import { BaseTabParamList } from '.';
 import { List } from '../screens/BusList';
 
 export type BusListParamList = {
-  List: {}
+  'Bus List': {}
 }
 
 export type BusListNav = BottomTabNavigationProp<BaseTabParamList, 'Bus List'>
@@ -22,7 +22,7 @@ export function BusList(props: MapProps) {
 
   return (
     <Stack.Navigator>
-      <Stack.Screen name="List" component={List} />
+      <Stack.Screen name="Bus List" component={List} />
     </Stack.Navigator>
   )
 }

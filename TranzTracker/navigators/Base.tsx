@@ -3,7 +3,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Map as MapNavigator } from "./Map";
 import { getIcon } from '../helpers';
 import { BusList } from './BusList';
-import { BusData } from '../interfaces';
+import { BusData, Position } from '../interfaces';
 import { getVehicleLocations } from '../api';
 import { BusListContext } from '../context/BusListContext';
 

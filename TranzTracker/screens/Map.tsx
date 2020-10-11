@@ -1,7 +1,7 @@
 import React from 'react'
 import MapView from 'react-native-maps'
 
-import { RouteProp } from '@react-navigation/native'
+import { CompositeNavigationProp, RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 
 import { BusData } from '../interfaces'
@@ -9,10 +9,14 @@ import { Map as Styles } from '../styles'
 import * as Location from '../helpers/location'
 
 import { BusMarker } from '../components'
-import { MapStackNav, MapStackParamList } from '../navigators'
+import { BaseTabParamList, MapStackNav, MapStackParamList } from '../navigators'
 import { BusListContext } from '../context/BusListContext'
+import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs'
 
-export type MapNavigation = StackNavigationProp<MapStackParamList, 'Map'>
+type MapNavigation = CompositeNavigationProp<
+  StackNavigationProp<MapStackParamList, 'Map'>,
+  BottomTabNavigationProp<BaseTabParamList>
+>
 type MapRoute = RouteProp<MapStackParamList, 'Map'>
 
 type MapProps = {
@@ -26,12 +30,20 @@ export class Map extends React.Component<MapProps> {
 
   map: MapView | null = null;
 
+  componentDidUpdate() {
+    if (this.props.route.params.centerLocation) {
+      this.map?.animateToRegion(Location.gtfsPositionToRegion(this.props.route.params.centerLocation))
+      this.props.navigation.setParams({ centerLocation: undefined })
+    }
+  }
+
   componentDidMount() {
     this.props.navigation.addListener('focus', (e) => {
-      console.log('focused on map')
       this.props.navigation.dangerouslyGetParent<MapStackNav>()?.setOptions({
         tabBarVisible: true
       })
+
+      console.log('map focused')
     })
 
     if (this.map !== null) {

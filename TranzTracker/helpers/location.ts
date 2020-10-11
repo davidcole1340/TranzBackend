@@ -1,5 +1,15 @@
 import * as ExpoLocation from 'expo-location'
 import { Region } from 'react-native-maps'
+import { Position } from '../interfaces';
+
+export function gtfsPositionToRegion(pos: Position): Region {
+  return {
+    latitude: pos.latitude,
+    longitude: pos.longitude,
+    latitudeDelta: 0.0322,
+    longitudeDelta: 0.0121
+  }
+}
 
 /**
  * Gets the devices current location. If permission is denied,

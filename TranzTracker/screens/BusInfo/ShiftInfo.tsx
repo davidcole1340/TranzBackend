@@ -30,6 +30,7 @@ const Routes: { [key: string]: string } = {
   20005: 'Constellation to City',
   20007: 'HBC to City',
   20008: 'City to Albany',
+  20010: 'City to Albany',
   20012: 'City to Albany',
   20014: 'City to HBC',
   20016: 'City to HBC',
@@ -115,8 +116,10 @@ export class ShiftInfo extends React.Component<ShiftInfoProps, ShiftInfoState> {
   }
 
   render() {
-    if (this.state.isLoading || ! this.state.shift) {
+    if (this.state.isLoading) {
       return (<Spinner />)
+    } else if (! this.state.shift) {
+      return (<Text style={{ ...Page.title, ...Page.container }}>Shift information unavailable.</Text>)
     }
 
     const hours = Math.floor(this.state.shift.hours_worked)

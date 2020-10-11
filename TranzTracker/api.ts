@@ -44,15 +44,18 @@ export async function getShift(bus: BusData): Promise<Shift> {
         _id
         hours_worked
         splits {
+          _id
           sign_on
           sign_off
           trips {
+            _id
             destination
             route
             route_id
             time
           }
           breaks {
+            _id
             start
             finish
             paid

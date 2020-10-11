@@ -43,7 +43,7 @@ interface Vehicle {
   license_plate: string
 }
 
-interface Position {
+export interface Position {
   latitude: number,
   longitude: number,
   bearing: number,

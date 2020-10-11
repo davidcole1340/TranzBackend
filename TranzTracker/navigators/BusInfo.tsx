@@ -30,7 +30,6 @@ const Tab = createBottomTabNavigator<BusInfoParamList>()
 export class BusInfo extends React.Component<BusInfoProps> {
   componentDidMount() {
     this.props.navigation.addListener('focus', (e) => {
-      console.log('focused on businfo')
       this.props.navigation.dangerouslyGetParent<MapStackNav>()?.setOptions({
         tabBarVisible: false
       })
