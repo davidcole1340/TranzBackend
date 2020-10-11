@@ -12,8 +12,10 @@ import { BusMarker } from '../components'
 import { BaseTabParamList, MapStackNav, MapStackParamList } from '../navigators'
 import { BusListContext } from '../context/BusListContext'
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs'
+import IMap from '../helpers/IMap'
+import { asyncDelay } from '../helpers'
 
-type MapNavigation = CompositeNavigationProp<
+export type MapNavigation = CompositeNavigationProp<
   StackNavigationProp<MapStackParamList, 'Map'>,
   BottomTabNavigationProp<BaseTabParamList>
 >
@@ -28,22 +30,31 @@ export class Map extends React.Component<MapProps> {
   static contextType = BusListContext
   context!: React.ContextType<typeof BusListContext>
 
-  map: MapView | null = null;
+  map: MapView | null = null
+  markers: IMap<BusMarker> = new IMap<BusMarker>((item) => item.props.bus.vehicle.id)
 
   componentDidUpdate() {
-    if (this.props.route.params.centerLocation) {
-      this.map?.animateToRegion(Location.gtfsPositionToRegion(this.props.route.params.centerLocation))
-      this.props.navigation.setParams({ centerLocation: undefined })
+    if (this.props.route.params?.centerBus) {
+      const bus = this.props.route.params.centerBus
+      this.props.navigation.setParams({ centerBus: undefined })
+      this.map?.animateToRegion(Location.gtfsPositionToRegion(bus.position), 750)
+
+      asyncDelay(800).then(() => {
+        const marker = this.markers.get(bus.vehicle.id)
+        if (marker) {
+          marker.baseMarker?.showCallout()
+        }
+      })
     }
   }
 
   componentDidMount() {
+    this.context.updateVehicleLocations()
+    
     this.props.navigation.addListener('focus', (e) => {
       this.props.navigation.dangerouslyGetParent<MapStackNav>()?.setOptions({
         tabBarVisible: true
       })
-
-      console.log('map focused')
     })
 
     if (this.map !== null) {
@@ -67,7 +78,11 @@ export class Map extends React.Component<MapProps> {
         }}
       >
         {this.context.buses.map((bus: BusData) => (
-          <BusMarker key={bus.vehicle.id} bus={bus} navigation={this.props.navigation} />
+          <BusMarker key={bus.vehicle.id} bus={bus} navigation={this.props.navigation} ref={marker => {
+            if (marker) {
+              this.markers.push(marker)
+            }
+          }} />
         ))}
       </MapView>
     )

@@ -3,34 +3,38 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Map as MapNavigator } from "./Map";
 import { getIcon } from '../helpers';
 import { BusList } from './BusList';
-import { BusData, Position } from '../interfaces';
+import { BusData } from '../interfaces';
 import { getVehicleLocations } from '../api';
-import { BusListContext } from '../context/BusListContext';
+import { BusListContext, BusListContextType } from '../context/BusListContext';
 
 export type BaseTabParamList = {
   Map: {},
-  'Bus List': {}
-}
-
-type BaseParams = {}
-type BaseState = {
-  loading: boolean,
-  buses: BusData[]
+  'Bus List': {
+    updateVehicleLocations: () => void
+  }
 }
 
 const Tab = createBottomTabNavigator<BaseTabParamList>()
 
-export class Base extends React.Component<BaseParams, BaseState> {
-  state: BaseState = {
-    loading: true,
-    buses: []
-  }
+export class Base extends React.Component<{}, BusListContextType> {
+  static contextType = BusListContext
+  context!: React.ContextType<typeof BusListContext>
 
-  componentDidMount() {
-    this.updateVehicleLocations()
+  state: BusListContextType = {
+    loading: false,
+    buses: [],
+    updateVehicleLocations: this.updateVehicleLocations.bind(this)
   }
 
   updateVehicleLocations() {
+    if (this.state.loading) {
+      console.log('Already updating, skipping.')
+      return
+    }
+
+    console.log('Updating vehicle locations')
+    this.setState({ loading: true })
+
     getVehicleLocations()
     .then((buses: BusData[]) => this.setState({ buses: buses }))
     .catch((e: Error) => alert(e.message))

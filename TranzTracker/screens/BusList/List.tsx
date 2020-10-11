@@ -1,7 +1,7 @@
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import { CompositeNavigationProp, RouteProp } from '@react-navigation/native';
 import React from 'react';
-import { Text, TouchableWithoutFeedbackBase, View } from 'react-native';
+import { RefreshControl, Text, View } from 'react-native';
 import { FlatList, TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { Spinner } from '../../components';
 import { BusListContext } from '../../context/BusListContext';
@@ -32,11 +32,10 @@ export class List extends React.Component<ListProps, ListState> {
   state: ListState = {}
 
   _handlePress(bus: BusData) {
-    const parent = this.props.navigation.dangerouslyGetParent<BusListNav>()
     this.props.navigation.navigate('Map', {
       screen: 'Map',
       params: {
-        centerLocation: bus.position
+        centerBus: bus
       }
     })
   }
@@ -54,10 +53,6 @@ export class List extends React.Component<ListProps, ListState> {
   }
 
   render() {
-    if (this.context.loading) {
-      return (<Spinner />)
-    }
-
     return (
       <View style={Page.container}>
         <FlatList
@@ -65,6 +60,12 @@ export class List extends React.Component<ListProps, ListState> {
           style={ListStyle.container}
           renderItem={this.renderItem.bind(this)}
           keyExtractor={(item: BusData) => item.vehicle.id}
+          refreshControl={
+            <RefreshControl
+              refreshing={this.context.loading}
+              onRefresh={this.context.updateVehicleLocations}
+            />
+          }
         />
       </View>
     );

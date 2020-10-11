@@ -12,9 +12,11 @@ import { BusInfo } from './BusInfo'
 
 export type MapStackParamList = {
   Map: {
-    centerLocation?: Position
+    centerBus?: BusData
   },
-  BusInfo: { bus: BusData }
+  BusInfo: {
+    bus: BusData
+  }
 }
 
 export type MapStackNav = BottomTabNavigationProp<BaseTabParamList, 'Map'>
@@ -28,10 +30,6 @@ type MapProps = {
 const Stack = createStackNavigator<MapStackParamList>();
 
 export class Map extends React.Component<MapProps> {
-  componentDidUpdate() {
-    
-  }
-  
   render() {
     return (
       <Stack.Navigator initialRouteName="Map">

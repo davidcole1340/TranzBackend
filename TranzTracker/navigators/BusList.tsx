@@ -6,7 +6,9 @@ import { BaseTabParamList } from '.';
 import { List } from '../screens/BusList';
 
 export type BusListParamList = {
-  'Bus List': {}
+  'Bus List': {
+    updateVehicleLocations: () => void
+  }
 }
 
 export type BusListNav = BottomTabNavigationProp<BaseTabParamList, 'Bus List'>
@@ -14,15 +16,18 @@ type BusListRoute = RouteProp<BaseTabParamList, 'Bus List'>
 
 type MapProps = {
   navigation: BusListNav,
-  route: BusListRoute
+  route: BusListRoute,
+  updateVehicleLocations: () => void
 }
 
-export function BusList(props: MapProps) {
-  const Stack = createStackNavigator()
+const Stack = createStackNavigator()
 
-  return (
-    <Stack.Navigator>
-      <Stack.Screen name="Bus List" component={List} />
-    </Stack.Navigator>
-  )
+export class BusList extends React.Component<MapProps> {
+  render() {
+    return (
+      <Stack.Navigator>
+        <Stack.Screen name="Bus List" component={List} />
+      </Stack.Navigator>
+    )
+  }
 }

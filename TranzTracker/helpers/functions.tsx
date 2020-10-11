@@ -79,3 +79,9 @@ export const getIcon = (icon: string) => {
     )
   }
 }
+
+export async function asyncDelay(time: number): Promise<void> {
+  return new Promise((resolve) => {
+    setTimeout(resolve, time)
+  })
+}

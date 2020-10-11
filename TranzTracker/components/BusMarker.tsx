@@ -15,6 +15,8 @@ interface BusMarkerProps {
 interface BusMarkerState {}
 
 export class BusMarker extends React.Component<BusMarkerProps, BusMarkerState> {
+  baseMarker?: Marker|null
+
   getMarkerColor(): string {
     if (this.props.bus.occupancy_status < 1) return isDark ? grey : 'black'
     else if (this.props.bus.occupancy_status < 2) return 'green'
@@ -32,7 +34,7 @@ export class BusMarker extends React.Component<BusMarkerProps, BusMarkerState> {
     }
 
     return (
-      <Marker {...props}>
+      <Marker {...props} ref={marker => this.baseMarker = marker}>
         <BusCallout bus={this.props.bus} navigation={this.props.navigation} />
       </Marker>
     );
