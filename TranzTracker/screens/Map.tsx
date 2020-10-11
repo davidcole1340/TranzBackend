@@ -9,7 +9,7 @@ import { Map as Styles } from '../styles'
 import * as Location from '../helpers/location'
 
 import { BusMarker } from '../components'
-import { MapStackParamList } from '../navigators'
+import { MapStackNav, MapStackParamList } from '../navigators'
 import { BusListContext } from '../context/BusListContext'
 
 export type MapNavigation = StackNavigationProp<MapStackParamList, 'Map'>
@@ -27,6 +27,13 @@ export class Map extends React.Component<MapProps> {
   map: MapView | null = null;
 
   componentDidMount() {
+    this.props.navigation.addListener('focus', (e) => {
+      console.log('focused on map')
+      this.props.navigation.dangerouslyGetParent<MapStackNav>()?.setOptions({
+        tabBarVisible: true
+      })
+    })
+
     if (this.map !== null) {
       // Get location and set. If it can't be found, do nothing.
       Location.getLocation()

@@ -51,8 +51,8 @@ export class TripInfo extends React.Component<TripInfoProps, TripInfoState> {
 
   renderTitle() {
     var title: string = this.props.route.params.bus.vehicle.label
-
-    if (this.state.tripInfo) {
+    
+    if (this.state.tripInfo?.shift) {
       title += ` - ${this.state.tripInfo.shift._id}`
     }
 
