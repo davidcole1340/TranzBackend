@@ -31,11 +31,11 @@
     "react-native-table-component": "^1.2.1"
   },
   "devDependencies": {
-    "@types/react": "^16.9.51",
+    "@types/react": "~16.9.35",
     "@types/react-dom": "~16.9.8",
-    "@types/react-native": "^0.63.25",
-    "react-native-web": "^0.13.17",
-    "typescript": "~3.9.5"
+    "@types/react-native": "~0.63.2",
+    "react-native-web": "~0.13.7",
+    "typescript": "~3.9.2"
   },
   "private": true
 }
