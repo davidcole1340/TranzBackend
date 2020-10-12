@@ -5,22 +5,14 @@ services:
     build: ./TranzQL
     restart: always
     ports:
-      - '8080:8080'
+      - '80:80'
     links:
       - mongo
     environment:
       - NODE_ENV=development
-      - TRANZQL_PORT=8080
+      - TRANZQL_PORT=80
       - MONGO_HOST=mongo
       - MONGO_DB=tranzurban
-      - MONGO_GTFS_DB=gtfs
-  watch:
-    build: ./Migrator
-    restart: always
-    links:
-      - mongo
-    environment:
-      - MONGO_HOST=mongo
       - MONGO_GTFS_DB=gtfs
       - AT_API_KEY=dcefb8b705d24f1cbf22dc47599eb69d
   mongo:
