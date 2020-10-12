@@ -8,6 +8,8 @@ services:
       - '80:80'
     links:
       - mongo
+    volumes:
+      - ./TranzQL:/usr/src/app
     environment:
       - NODE_ENV=development
       - TRANZQL_PORT=80
