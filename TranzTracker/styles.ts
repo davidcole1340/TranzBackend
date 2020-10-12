@@ -90,5 +90,11 @@ export const List = StyleSheet.create({
     margin: 4,
     flex: 1,
     flexDirection: 'column'
+  },
+  headerContainer: {
+    backgroundColor: isDark ? 'white' : 'black'
+  },
+  headerTitle: {
+    color: isDark ? 'black' : 'white'
   }
 })

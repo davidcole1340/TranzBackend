@@ -1,6 +1,6 @@
 import React from 'react';
-import { RefreshControl, Text, View } from 'react-native';
-import { FlatList, TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import { RefreshControl, SectionList, Text, View } from 'react-native';
+import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import { CompositeNavigationProp, RouteProp } from '@react-navigation/native';
@@ -48,11 +48,28 @@ export class List extends React.Component<ListProps, ListState> {
   }
 
   render() {
+    const bci = this.context.buses.filter(bus => bus.vehicle.label[3] == '5')
+    const scania = this.context.buses.filter(bus => bus.vehicle.label[3] == '3')
+
     return (
       <View style={Page.container}>
-        <FlatList
-          data={this.context.buses}
+        <SectionList
+          sections={[
+            {
+              title: 'BCI',
+              data: bci
+            },
+            {
+              title: 'Scania',
+              data: scania
+            }
+          ]}
           style={ListStyle.container}
+          renderSectionHeader={(info) => (
+            <View style={{ ...ListStyle.item, ...ListStyle.headerContainer }}>
+              <Text style={{ ...ListStyle.title, ...ListStyle.headerTitle }}>{info.section.title}</Text>
+            </View>
+          )}
           renderItem={this.renderItem.bind(this)}
           keyExtractor={(item: BusData) => item.vehicle.id}
           refreshControl={
