@@ -1,25 +1,25 @@
-import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
-import { CompositeNavigationProp, RouteProp } from '@react-navigation/native';
 import React from 'react';
 import { RefreshControl, Text, View } from 'react-native';
 import { FlatList, TouchableWithoutFeedback } from 'react-native-gesture-handler';
-import { Spinner } from '../../components';
+
+import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
+import { CompositeNavigationProp, RouteProp } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+
 import { BusListContext } from '../../context/BusListContext';
 import { getBusDelay, OCCUPANCY_STRINGS } from '../../helpers';
 import { BusData } from '../../interfaces';
-import { BaseTabParamList } from '../../navigators';
-import { BusListNav, BusListParamList } from '../../navigators/BusList';
+import { BaseStackParamList, MapTabParamList } from '../../navigators';
 import { Page, List as ListStyle } from '../../styles';
 
-
-type ListNav = CompositeNavigationProp<
-  BottomTabNavigationProp<BusListParamList, 'Bus List'>,
-  BottomTabNavigationProp<BaseTabParamList>
+export type ListNavigation = CompositeNavigationProp<
+  BottomTabNavigationProp<MapTabParamList, 'Bus List'>,
+  StackNavigationProp<BaseStackParamList>
 >
-type ListRoute = RouteProp<BusListParamList, 'Bus List'>
+type ListRoute = RouteProp<MapTabParamList, 'Bus List'>
 
 type ListProps = {
-  navigation: ListNav,
+  navigation: ListNavigation,
   route: ListRoute
 }
 
@@ -32,12 +32,7 @@ export class List extends React.Component<ListProps, ListState> {
   state: ListState = {}
 
   _handlePress(bus: BusData) {
-    this.props.navigation.navigate('Map', {
-      screen: 'Map',
-      params: {
-        centerBus: bus
-      }
-    })
+    this.props.navigation.navigate('Map', { centerBus: bus });
   }
 
   renderItem({ item }: { item: BusData }) {

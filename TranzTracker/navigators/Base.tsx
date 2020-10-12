@@ -1,20 +1,23 @@
 import React from 'react';
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { Map as MapNavigator } from "./Map";
-import { getIcon } from '../helpers';
-import { BusList } from './BusList';
+import { createStackNavigator } from '@react-navigation/stack';
+
 import { BusData } from '../interfaces';
 import { getVehicleLocations } from '../api';
 import { BusListContext, BusListContextType } from '../context/BusListContext';
+import { MapTab } from './MapTab';
+import { BusInfo } from './BusInfo'
+import { TitleButtons } from '../components';
 
-export type BaseTabParamList = {
-  Map: {},
-  'Bus List': {
-    updateVehicleLocations: () => void
+export type BaseStackParamList = {
+  Map: {
+    centerBus: BusData
+  },
+  'Bus Info': {
+    bus: BusData
   }
 }
 
-const Tab = createBottomTabNavigator<BaseTabParamList>()
+const Stack = createStackNavigator<BaseStackParamList>();
 
 export class Base extends React.Component<{}, BusListContextType> {
   static contextType = BusListContext
@@ -44,14 +47,13 @@ export class Base extends React.Component<{}, BusListContextType> {
   render() {
     return (
       <BusListContext.Provider value={this.state}>
-        <Tab.Navigator>
-          <Tab.Screen name="Map" component={MapNavigator} options={{
-            tabBarIcon: getIcon('md-map')
+        <Stack.Navigator initialRouteName="Map">
+          <Stack.Screen name="Map" component={MapTab} options={{
+            title: '',
+            headerLeft: (props) => <TitleButtons stackProps={props} />
           }} />
-          <Tab.Screen name="Bus List" component={BusList} options={{
-            tabBarIcon: getIcon('md-list')
-          }} />
-        </Tab.Navigator>
+          <Stack.Screen name="Bus Info" component={BusInfo} /> 
+        </Stack.Navigator>
       </BusListContext.Provider>
     )
   }

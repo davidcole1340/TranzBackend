@@ -3,23 +3,23 @@ import MapView from 'react-native-maps'
 
 import { CompositeNavigationProp, RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
+import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs'
 
 import { BusData } from '../interfaces'
 import { Map as Styles } from '../styles'
 import * as Location from '../helpers/location'
 
 import { BusMarker } from '../components'
-import { BaseTabParamList, MapStackNav, MapStackParamList } from '../navigators'
 import { BusListContext } from '../context/BusListContext'
-import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs'
 import IMap from '../helpers/IMap'
 import { asyncDelay } from '../helpers'
+import { BaseStackParamList, MapTabParamList } from '../navigators'
 
 export type MapNavigation = CompositeNavigationProp<
-  StackNavigationProp<MapStackParamList, 'Map'>,
-  BottomTabNavigationProp<BaseTabParamList>
+  BottomTabNavigationProp<MapTabParamList, 'Map'>,
+  StackNavigationProp<BaseStackParamList>
 >
-type MapRoute = RouteProp<MapStackParamList, 'Map'>
+type MapRoute = RouteProp<MapTabParamList, 'Map'>
 
 type MapProps = {
   navigation: MapNavigation,

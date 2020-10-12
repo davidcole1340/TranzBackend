@@ -1,15 +1,16 @@
 import React from 'react';
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { TripInfo } from "../screens";
 import { StackNavigationProp } from '@react-navigation/stack';
-import { MapStackNav, MapStackParamList } from '.';
 import { RouteProp } from '@react-navigation/native';
+
+import { TripInfo } from "../screens";
 import { BusData } from '../interfaces';
 import { ShiftInfo } from '../screens/BusInfo/ShiftInfo';
 import { getIcon } from '../helpers';
+import { BaseStackParamList } from './Base';
 
-type BusInfoNavigator = StackNavigationProp<MapStackParamList, 'BusInfo'>
-type BusInfoRoute = RouteProp<MapStackParamList, 'BusInfo'>
+type BusInfoNavigator = StackNavigationProp<BaseStackParamList, 'Bus Info'>
+type BusInfoRoute = RouteProp<BaseStackParamList, 'Bus Info'>
 
 type BusInfoProps = {
   navigation: BusInfoNavigator,
@@ -29,12 +30,6 @@ const Tab = createBottomTabNavigator<BusInfoParamList>()
 
 export class BusInfo extends React.Component<BusInfoProps> {
   componentDidMount() {
-    this.props.navigation.addListener('focus', (e) => {
-      this.props.navigation.dangerouslyGetParent<MapStackNav>()?.setOptions({
-        tabBarVisible: false
-      })
-    })
-    
     this.props.navigation.setOptions({
       title: this.props.route.params.bus.vehicle.label
     })

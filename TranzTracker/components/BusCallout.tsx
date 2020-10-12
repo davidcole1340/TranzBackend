@@ -18,7 +18,7 @@ export class BusCallout extends React.Component<BusCalloutProps, BusCalloutState
     return (
       <Callout tooltip={true} style={{
         backgroundColor: isDark ? grey : 'white'
-      }} onPress={() => this.props.navigation.navigate('BusInfo', { bus: this.props.bus })}>
+      }} onPress={() => this.props.navigation.navigate('Bus Info', { bus: this.props.bus })}>
         <Text style={Page.text}>{this.props.bus.vehicle.label}</Text>
       </Callout>
     )

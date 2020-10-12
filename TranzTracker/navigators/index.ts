@@ -1,3 +1,3 @@
 export * from './Base'
-export * from './Map'
+export * from './MapTab'
 export * from './BusInfo'

@@ -3,7 +3,7 @@ import { View, Text } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { Row, Rows, Table } from 'react-native-table-component'
 
-import { RouteProp } from "@react-navigation/native";
+import { CompositeNavigationProp, RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 
 import { BusInfoParamList } from "../../navigators";
@@ -14,8 +14,12 @@ import { getBusStops } from "../../api";
 import { TripQuery } from "../../interfaces/queries";
 import { GTFSTrip } from "../../interfaces/gtfs";
 import { Spinner } from "../../components";
+import { BottomTabNavigationProp } from "@react-navigation/bottom-tabs";
 
-type TripInfoNavigator = StackNavigationProp<BusInfoParamList, 'Trip'>
+type TripInfoNavigator = CompositeNavigationProp<
+  BottomTabNavigationProp<BusInfoParamList, 'Trip'>,
+  StackNavigationProp<BusInfoParamList>
+>
 type TripInfoRoute = RouteProp<BusInfoParamList, 'Trip'>
 
 type TripInfoProps = {

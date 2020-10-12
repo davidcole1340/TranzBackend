@@ -1,10 +1,14 @@
-import { RouteProp } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
-import moment from 'moment';
 import React from 'react';
 import { Text, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { Row, Rows, Table } from 'react-native-table-component';
+
+import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
+import { CompositeNavigationProp, RouteProp } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+
+import moment from 'moment';
+
 import { getShift } from '../../api';
 import { Spinner } from '../../components';
 import { getTime } from '../../helpers';
@@ -12,7 +16,10 @@ import { Break, Shift, Split, Trip } from '../../interfaces/tranzit';
 import { BusInfoParamList } from '../../navigators';
 import { Page, Table as TableStyle } from '../../styles';
 
-type ShiftInfoNavigator = StackNavigationProp<BusInfoParamList, 'Shift'>
+type ShiftInfoNavigator = CompositeNavigationProp<
+  BottomTabNavigationProp<BusInfoParamList, 'Shift'>,
+  StackNavigationProp<BusInfoParamList>
+>
 type ShiftInfoRoute = RouteProp<BusInfoParamList, 'Shift'>
 
 type ShiftInfoProps = {
