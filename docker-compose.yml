@@ -5,7 +5,7 @@ services:
     build: ./TranzQL
     restart: always
     volumes: 
-      - ${SSL_KEY_PATH}:/usr/cert
+      - /etc/letsencrypt:/etc/letsencrypt
     ports:
       - '80:80'
       - '443:443'
@@ -15,7 +15,7 @@ services:
       - ./.env
     environment: 
       - MONGO_HOST=mongo
-      - SSL_KEY_PATH=/usr/cert
+      - SSL_KEY_PATH=/etc/letsencrypt/live/${HOST_URL}
   mongo:
     image: mongo
     ports:
