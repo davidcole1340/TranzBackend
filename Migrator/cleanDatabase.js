@@ -22,10 +22,6 @@ async function clean() {
     route_id: {'$in': routes}
   }).toArray()).map(trip => trip._id);
 
-  const stops = (await db.collection('stop_times').find({
-    trip_id: {'$in': trips}
-  }).toArray()).map(st => st.stop_id)
-
   // Delete stop times
   const stopTimesCount = await db.collection('stop_times').deleteMany({
     trip_id: {'$in': trips}
@@ -41,12 +37,7 @@ async function clean() {
     _id: {'$in': routes}
   });
 
-  // Delete stops
-  const stopsCount = await db.collection('stops').deleteMany({
-    _id: {'$in': stops}
-  })
-
-  console.log(`removed the following: stop_times: ${stopTimesCount.deletedCount}, trips: ${tripsCount.deletedCount}, routes: ${routesCount.deletedCount}, stops: ${stopsCount.deletedCount}`);
+  console.log(`removed the following: stop_times: ${stopTimesCount.deletedCount}, trips: ${tripsCount.deletedCount}, routes: ${routesCount.deletedCount}`);
   client.close();
 }
 
