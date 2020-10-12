@@ -8,6 +8,8 @@ services:
       - '80:80'
     links:
       - mongo
+    env_file:
+      - ./.env
   mongo:
     image: mongo
     ports:
