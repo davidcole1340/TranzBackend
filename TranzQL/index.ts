@@ -5,6 +5,7 @@ declare var process: {
     MONGO_GTFS_DB: string,
     TRANZQL_PORT: number,
     HOLIDAY_TIMETABLE: string,
+    SSL_KEY_PATH: string|undefined,
     AT_API_KEY: string,
     NODE_ENV: 'development' | 'production'
   }
@@ -14,9 +15,12 @@ const {
   MONGO_HOST,
   MONGO_DB,
   MONGO_GTFS_DB,
-  TRANZQL_PORT
+  TRANZQL_PORT,
+  SSL_KEY_PATH
 } = process.env;
 
+import http from "http"
+import https from "https"
 import express from "express"
 import {
   graphqlHTTP
@@ -65,5 +69,17 @@ MongoClient.connect(uri, { useUnifiedTopology: true }).then((client) => {
     });
   });
 
-  app.listen(TRANZQL_PORT, () => console.log(`Listening on port ${TRANZQL_PORT}`))
+  const httpServer = http.createServer(app);
+  httpServer.listen(TRANZQL_PORT, () => console.log(`Listening on port ${TRANZQL_PORT}`));
+
+  if (SSL_KEY_PATH) {
+    const creds: https.ServerOptions = {
+      key: fs.readFileSync(`${SSL_KEY_PATH}/privkey.pem`, 'utf8'),
+      cert: fs.readFileSync(`${SSL_KEY_PATH}/cert.pem`, 'utf8'),
+      ca: fs.readFileSync(`${SSL_KEY_PATH}/fullchain.pem`, 'utf8')
+    }
+
+    const httpsServer = https.createServer(creds, app);
+    httpsServer.listen(443, () => console.log('https server listening on 443'));
+  }
 }).catch(console.error)
