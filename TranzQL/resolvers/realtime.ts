@@ -114,21 +114,18 @@ export const getBusData = async (): Promise<BusData[]> => {
     throw new Error(positionUpdates.response.error);
   }
 
-  tripUpdates.response.entity.forEach(update => {
-    // Find corresponding vehicle position
-    const position = positionUpdates.response.entity.find((pos) => {
-      return pos.vehicle.vehicle.id == update.trip_update.vehicle.id
-    });
+  positionUpdates.response.entity.forEach(pos => {
+    const update = tripUpdates.response.entity.find(u => pos.vehicle.vehicle.id == u.trip_update.vehicle.id)
 
-    if (position !== undefined) {
+    if (update !== undefined) {
       const data: BusData = {
-        ...position.vehicle,
+        ...pos.vehicle,
         ...update.trip_update
-      };
+      }
 
-      response.push(data);
+      response.push(data)
     }
-  });
+  })
 
   return response;
 }
