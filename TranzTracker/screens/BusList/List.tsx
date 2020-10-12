@@ -7,10 +7,11 @@ import { CompositeNavigationProp, RouteProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 
 import { BusListContext } from '../../context/BusListContext';
-import { getBusDelay, OCCUPANCY_STRINGS } from '../../helpers';
 import { BusData } from '../../interfaces';
 import { BaseStackParamList, MapTabParamList } from '../../navigators';
 import { Page, List as ListStyle } from '../../styles';
+import { BusListItem } from '../../components/BusListItem';
+import { BusDirection } from '../../helpers/functions'
 
 export type ListNavigation = CompositeNavigationProp<
   BottomTabNavigationProp<MapTabParamList, 'Bus List'>,
@@ -38,30 +39,30 @@ export class List extends React.Component<ListProps, ListState> {
   renderItem({ item }: { item: BusData }) {
     return (
       <TouchableWithoutFeedback onPress={this._handlePress.bind(this, item)}>
-        <View style={ListStyle.item}>
-          <Text style={ListStyle.title}>{item.vehicle.label}</Text>
-          <Text style={ListStyle.text}>{getBusDelay(item)}</Text>
-          <Text style={ListStyle.text}>{OCCUPANCY_STRINGS[item.occupancy_status]}</Text>
-        </View>
+        <BusListItem bus={item} />
       </TouchableWithoutFeedback>
     );
   }
 
   render() {
-    const bci = this.context.buses.filter(bus => bus.vehicle.label[3] == '5')
-    const scania = this.context.buses.filter(bus => bus.vehicle.label[3] == '3')
+    const city = this.context.buses
+    .filter(bus => bus.trip.direction_id == BusDirection.City)
+    .sort((a, b) => b.occupancy_status - a.occupancy_status)
+
+    const albany = this.context.buses.filter(bus => bus.trip.direction_id == BusDirection.Albany)
+    .sort((a, b) => b.occupancy_status - a.occupancy_status)
 
     return (
       <View style={Page.container}>
         <SectionList
           sections={[
             {
-              title: 'BCI',
-              data: bci
+              title: 'City-bound',
+              data: city
             },
             {
-              title: 'Scania',
-              data: scania
+              title: 'Albany-bound',
+              data: albany
             }
           ]}
           style={ListStyle.container}

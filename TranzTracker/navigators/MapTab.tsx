@@ -6,6 +6,7 @@ import { Map, List } from '../screens';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { BaseStackParamList } from './Base';
 import { RouteProp } from '@react-navigation/native';
+import { BusData } from '../interfaces';
 
 type MapTabNavigator = StackNavigationProp<BaseStackParamList, 'Map'>
 type MapTabRoute = RouteProp<BaseStackParamList, 'Map'>
@@ -16,7 +17,9 @@ type MapTabProps = {
 }
 
 export type MapTabParamList = {
-  Map: {},
+  Map: {
+    centerBus: BusData
+  },
   'Bus List': {}
 }
 

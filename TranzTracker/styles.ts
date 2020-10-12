@@ -76,7 +76,7 @@ export const List = StyleSheet.create({
     flexDirection: 'column',
     marginBottom: 4,
     borderColor: isDark ? 'white' : 'black',
-    borderWidth: 1.5,
+    borderWidth: 2,
     borderRadius: 5
   },
   title: {
@@ -87,7 +87,6 @@ export const List = StyleSheet.create({
   },
   text: {
     ...Page.text,
-    margin: 4,
     flex: 1,
     flexDirection: 'column'
   },
@@ -96,5 +95,9 @@ export const List = StyleSheet.create({
   },
   headerTitle: {
     color: isDark ? 'black' : 'white'
+  },
+  row: {
+    flex: 1,
+    flexDirection: 'row'
   }
 })

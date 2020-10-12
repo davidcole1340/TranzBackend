@@ -3,8 +3,9 @@ import { Ionicons } from "@expo/vector-icons";
 import moment from "moment";
 import { BusData } from "../interfaces";
 import { Break, Trip } from "../interfaces/tranzit";
+import { grey, isDark } from '../styles';
 
-enum BusDirection {
+export enum BusDirection {
   City = 0,
   Albany
 }
@@ -27,10 +28,10 @@ export function getBusDelay(bus: BusData): string {
   var output: string = '';
 
   if (delay < 0) {
-    output += 'Ahead of schedule by ';
+    output += 'Ahead ';
     delay = -delay;
   } else {
-    output += 'Behind schedule by ';
+    output += 'Behind ';
   }
 
   const minutes = Math.floor(delay / 60);
@@ -53,7 +54,7 @@ export function getBusDirection(bus: BusData): string {
       return 'Albany-bound'
   }
 
-  return '';
+  return 'Direction unknown';
 }
 
 export function getTime(a: Trip|Break, start: boolean = true): moment.Moment {
@@ -84,4 +85,12 @@ export async function asyncDelay(time: number): Promise<void> {
   return new Promise((resolve) => {
     setTimeout(resolve, time)
   })
+}
+
+export function getBusColor(bus: BusData, darkModeColor: string = grey): string {
+  if (bus.occupancy_status < 1) return isDark ? darkModeColor : 'black'
+  else if (bus.occupancy_status < 2) return 'green'
+  else if (bus.occupancy_status < 3) return 'orange';
+
+  return 'red';
 }

@@ -1,5 +1,6 @@
 import { BusData } from './interfaces'
-import { ShiftQuery, TripQuery } from './interfaces/queries'
+import { Stop } from './interfaces/gtfs'
+import { ShiftQuery, StopQuery, TripQuery } from './interfaces/queries'
 import { Shift } from './interfaces/tranzit'
 
 const BASE_API = 'http://127.0.0.1:8080'
@@ -71,4 +72,19 @@ export async function getShift(bus: BusData): Promise<Shift> {
   }
 
   return result.trip.shift
+}
+
+export async function getStops(): Promise<Stop[]> {
+  const result = await callGraphql<StopQuery>(`
+  {
+    stops {
+      _id
+      stop_name
+      stop_lon
+      stop_lat
+    }
+  }
+  `)
+
+  return result.stops
 }

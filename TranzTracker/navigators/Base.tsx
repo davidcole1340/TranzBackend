@@ -2,16 +2,14 @@ import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import { BusData } from '../interfaces';
-import { getVehicleLocations } from '../api';
+import { getStops, getVehicleLocations } from '../api';
 import { BusListContext, BusListContextType } from '../context/BusListContext';
 import { MapTab } from './MapTab';
 import { BusInfo } from './BusInfo'
 import { TitleButtons } from '../components';
 
 export type BaseStackParamList = {
-  Map: {
-    centerBus: BusData
-  },
+  Map: {},
   'Bus Info': {
     bus: BusData
   }
@@ -26,7 +24,12 @@ export class Base extends React.Component<{}, BusListContextType> {
   state: BusListContextType = {
     loading: false,
     buses: [],
+    stops: [],
     updateVehicleLocations: this.updateVehicleLocations.bind(this)
+  }
+
+  componentDidMount() {
+    this.updateStops()
   }
 
   updateVehicleLocations() {
@@ -42,6 +45,12 @@ export class Base extends React.Component<{}, BusListContextType> {
     .then((buses: BusData[]) => this.setState({ buses: buses }))
     .catch((e: Error) => alert(e.message))
     .finally(() => this.setState({ loading: false }))
+  }
+
+  updateStops() {
+    getStops()
+    .then((stops) => this.setState({ stops: stops }))
+    .catch((e: Error) => alert(e.message))
   }
 
   render() {
