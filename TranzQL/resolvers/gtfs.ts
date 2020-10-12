@@ -26,6 +26,14 @@ export const gtfsResolvers = (tranzDb: Db, db: Db): IResolvers => ({
       return db.collection('trips').findOne({
         _id: args.id
       })
+    },
+
+    stops: async () => {
+      const routes = await db.collection('routes').find({}).toArray()
+      const trips = await db.collection('trips').find({ route_id: {'$in': routes.map(route => route._id)} }).toArray()
+      const stop_times = await db.collection('stop_times').find({ trip_id: {'$in': trips.map(trip => trip._id)} }).toArray()
+
+      return db.collection('stops').find({ _id: {'$in': stop_times.map(st => st.stop_id)} }).toArray()
     }
   },
 

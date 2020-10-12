@@ -1,6 +1,7 @@
 extend type Query {
   routes: [Route]!
   trip(id: String): GTFSTrip
+  stops: [Stop]!
 }
 
 type Calendar {
