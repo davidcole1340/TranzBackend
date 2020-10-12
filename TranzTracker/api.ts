@@ -3,7 +3,7 @@ import { Stop } from './interfaces/gtfs'
 import { ShiftQuery, StopQuery, TripQuery } from './interfaces/queries'
 import { Shift } from './interfaces/tranzit'
 
-const BASE_API = 'http://dcol542.co'
+const BASE_API = 'https://dcol542.co'
 
 async function callGraphql<T>(query: string): Promise<T> {
   const resp = await fetch(`${BASE_API}/graphql?query=${query}`)
