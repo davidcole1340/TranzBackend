@@ -10,6 +10,8 @@ services:
       - mongo
     env_file:
       - ./.env
+    environment: 
+      - MONGO_HOST=mongo
   mongo:
     image: mongo
     ports:
