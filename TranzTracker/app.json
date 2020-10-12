@@ -17,7 +17,8 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.david.cole1340.TranzTracker"
     },
     "web": {
       "favicon": "./assets/favicon.png"
