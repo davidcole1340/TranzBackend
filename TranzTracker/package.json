@@ -34,6 +34,7 @@
     "@types/react": "~16.9.35",
     "@types/react-dom": "~16.9.8",
     "@types/react-native": "~0.63.2",
+    "@types/react-native-table-component": "^1.2.0",
     "react-native-web": "~0.13.7",
     "typescript": "~3.9.2"
   },
