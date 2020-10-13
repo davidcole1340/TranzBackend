@@ -47,10 +47,10 @@ export class List extends React.Component<ListProps, ListState> {
   render() {
     const city = this.context.buses
     .filter(bus => bus.trip.direction_id == BusDirection.City)
-    .sort((a, b) => b.occupancy_status - a.occupancy_status)
+    .sort((a, b) => a.stop_time_update?.stop_sequence - b.stop_time_update?.stop_sequence)
 
     const albany = this.context.buses.filter(bus => bus.trip.direction_id == BusDirection.Albany)
-    .sort((a, b) => b.occupancy_status - a.occupancy_status)
+    .sort((a, b) => a.stop_time_update?.stop_sequence - b.stop_time_update?.stop_sequence)
 
     return (
       <View style={Page.container}>
