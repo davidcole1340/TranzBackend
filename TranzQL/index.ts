@@ -4,9 +4,7 @@ declare var process: {
     MONGO_DB: string,
     MONGO_GTFS_DB: string,
     TRANZQL_PORT: number,
-    HOLIDAY_TIMETABLE: string,
     SSL_KEY_PATH: string|undefined,
-    AT_API_KEY: string,
     NODE_ENV: 'development' | 'production'
   }
 }
@@ -30,13 +28,18 @@ import { MongoClient } from "mongodb";
 import { tranzResolvers, gtfsResolvers, getBusData } from './resolvers'
 import { IResolvers, makeExecutableSchema } from "graphql-tools";
 import merge from "lodash.merge"
+import { checkVersions } from "./watch";
 
 const app = express();
 const uri = `mongodb://${MONGO_HOST}:27017`;
+const hour = 1000 * 60 * 60; // 1 hour
 
 MongoClient.connect(uri, { useUnifiedTopology: true }).then((client) => {
   const tranzDb = client.db(MONGO_DB);
   const gtfsDb = client.db(MONGO_GTFS_DB);
+
+  checkVersions(gtfsDb);
+  setInterval(() => checkVersions(gtfsDb), 1 * hour);
 
   const typeDefs: string = (() => {
     const files = fs.readdirSync('./schema')
