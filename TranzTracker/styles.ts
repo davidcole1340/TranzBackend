@@ -18,7 +18,7 @@ export const Map = StyleSheet.create({
 export const Page = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 10
+    padding: 5
   },
   spinner: {
     flexDirection: 'row',

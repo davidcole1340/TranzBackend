@@ -1,11 +1,12 @@
 import React from "react";
-import { View, Text } from "react-native";
+import { View, Text, Button, Alert } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { Row, Rows, Table } from 'react-native-table-component'
 
 import { CompositeNavigationProp, RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 
+import * as Storage from '../../helpers/CheckInStorage'
 import { BusInfoParamList } from "../../navigators";
 import { Page, Table as TableStyle } from '../../styles'
 import { BusData } from "../../interfaces";
@@ -66,8 +67,7 @@ export class TripInfo extends React.Component<TripInfoProps, TripInfoState> {
   renderTable() {
     if (this.state.isLoading) {
       return (<Spinner />)
-    }
-    if (! this.state.tripInfo) {
+    } else if (! this.state.tripInfo) {
       return (<Text style={Page.text}>No trip information available.</Text>)
     }
 
@@ -100,12 +100,40 @@ export class TripInfo extends React.Component<TripInfoProps, TripInfoState> {
     return output
   }
 
+  renderAlert(bus: BusData) {
+    Alert.alert('Check-in', `Are you sure you want to check-in to ${bus.vehicle.label}?`, [
+      {
+        text: 'Yes',
+        onPress: () => Storage.addCheckIn(bus)
+      },
+      {
+        text: 'Cancel',
+        onPress: () => null
+      }
+    ]);
+  }
+
   render() {
     const bus: BusData = this.props.route.params.bus;
 
     return (
-      <View style={Page.container}>
-        <Text style={Page.title}>{this.renderTitle()}</Text>
+      <View style={{ ...Page.container, flexDirection: 'column' }}>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+          <View style={{ flex: 1, alignContent: 'flex-start'  }}>
+            <Text style={Page.title}>{this.renderTitle()}</Text>
+          </View>
+
+          <View style={{ flex: 1, alignContent: 'flex-end' }}>
+            <View style={{ borderRadius: 20, backgroundColor: '#007AFF' }}>
+              <Button
+                title="Check-in"
+                color="black"
+                onPress={this.renderAlert.bind(this, bus)}
+              />
+            </View>
+          </View>
+        </View>
+
         <Text style={Page.text}>{getBusDelay(bus)} - {getBusDirection(bus)}</Text>
 
         <ScrollView>

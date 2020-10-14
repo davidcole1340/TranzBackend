@@ -50,16 +50,10 @@ export class Map extends React.Component<MapProps> {
 
   componentDidMount() {
     this.context.updateVehicleLocations()
-    
-    this.props.navigation.addListener('focus', (e) => {
-      this.props.navigation.dangerouslyGetParent<MapStackNav>()?.setOptions({
-        tabBarVisible: true
-      })
-    })
 
     if (this.map !== null) {
       // Get location and set. If it can't be found, do nothing.
-      Location.getLocation()
+      Location.getRegionLocation()
       .then(region => this.map?.animateToRegion(region))
       .catch()
     }
@@ -79,7 +73,7 @@ export class Map extends React.Component<MapProps> {
       >
         {this.context.buses.map((bus: BusData) => (
           <BusMarker key={bus.vehicle.id} bus={bus} navigation={this.props.navigation} ref={marker => {
-            if (marker) {
+            if (marker) {2
               this.markers.push(marker)
             }
           }} />
