@@ -33,8 +33,9 @@ export async function checkVersions(db: Db) {
 
     if (count < 1) {
       console.log(`Version ${version} missing, running update script.`);
-      console.log(`${__dirname}/gtfsimport`)
-      const updater = Process.spawn(`${__dirname}/gtfsimport`, [ MONGO_HOST as string, MONGO_GTFS_DB as string ]);
+      const dir = process.cwd();
+
+      const updater = Process.spawn(`${dir}/gtfsimport`, [ MONGO_HOST as string, MONGO_GTFS_DB as string ]);
       updater.stdout.on('data', (data) => process.stdout.write(`script: ${data}`));
       updater.stderr.on('data', (data) => process.stderr.write(`script: ${data}`));
 
