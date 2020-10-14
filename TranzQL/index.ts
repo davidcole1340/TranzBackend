@@ -75,7 +75,7 @@ MongoClient.connect(uri, { useUnifiedTopology: true }).then((client) => {
   const httpServer = http.createServer(app);
   httpServer.listen(TRANZQL_PORT, () => console.log(`Listening on port ${TRANZQL_PORT}`));
 
-  if (SSL_KEY_PATH && ! (SSL_KEY_PATH !== '')) {
+  if (SSL_KEY_PATH && SSL_KEY_PATH !== '') {
     const creds: https.ServerOptions = {
       key: fs.readFileSync(`${SSL_KEY_PATH}/privkey.pem`, 'utf8'),
       cert: fs.readFileSync(`${SSL_KEY_PATH}/cert.pem`, 'utf8'),
