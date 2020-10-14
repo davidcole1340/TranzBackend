@@ -23,11 +23,6 @@ if ! command -v mongoimport &> /dev/null; then
   exit 1;
 fi
 
-if ! command -v mongo &> /dev/null; then
-  echo "mongo shell not found. please install"
-  exit 1;
-fi
-
 downloadGtfs() {
   mkdir -p gtfs; cd gtfs;
 
