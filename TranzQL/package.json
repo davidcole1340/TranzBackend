@@ -4,7 +4,9 @@
   "description": "GraphQL server for Tranzit and AT information",
   "main": "index.js",
   "scripts": {
-    "start": "tsnd --respawn index.ts"
+    "build": "tsc",
+    "start": "node ./dist/index.js",
+    "debug": "tsnd --respawn index.ts"
   },
   "author": "David Cole <david.cole1340@gmail.com>",
   "license": "UNLICENSED",
