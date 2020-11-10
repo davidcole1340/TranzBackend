@@ -4,10 +4,73 @@ import moment from "moment";
 import { BusData } from "../interfaces";
 import { Break, Trip } from "../interfaces/tranzit";
 import { grey, isDark } from '../styles';
+import { AlbanyBound } from '../screens/BusList/AlbanyBound';
 
 export enum BusDirection {
   City = 0,
   Albany
+}
+
+const AlbanyBoundStopOrder = [
+  7089, // Wellesley near AUT
+  1364, // Mayoral Dr
+  1090, // Wellesley St
+  1334, // Halsey St
+  7036, // Vic Park
+  4063, // Akoranga
+  3355, // Smales Farm
+  3221, // Sunnynook
+  4223, // Constellation
+  4227, // Albany
+  4569 // HBC
+]
+
+const CityBoundStopOrder = [
+  4569, // HBC
+  4228, // Albany
+  4222, // Constellation
+  3219, // Sunnynook
+  3360, // Smales Farm
+  4065, // Akoranga
+  7037, // Fanshawe
+  1319, // Halsey St
+  1079, // Wellesley St
+  7082, // Hobson St
+  1318, // Mayoral Dr
+  7128, // Wakefield St
+  7147, // Symonds St
+]
+
+export function getStopId(stop: string): number {
+  return Number(
+    stop.split('-')[0]
+  )
+}
+
+export function getStopOrder(stop: string, direction: BusDirection): number {
+  let _index: number = 0
+  const bus_stop_id = getStopId(stop)
+
+  // City-Bound
+  if (direction == BusDirection.City) {
+    CityBoundStopOrder.find((stop_id, index) => {
+      if (stop_id == bus_stop_id) {
+        _index = index
+        return true
+      }
+    })
+  }
+  // Albany-Bound
+  else {
+    AlbanyBoundStopOrder.find((stop_id, index) => {
+      if (stop_id == bus_stop_id) {
+        _index = index
+        return true
+      }
+    })
+  }
+
+  return _index
 }
 
 export function getBusDelay(bus: BusData): string {

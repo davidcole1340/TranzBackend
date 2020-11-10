@@ -9,6 +9,8 @@ import { RouteProp } from '@react-navigation/native';
 import { BusData } from '../interfaces';
 import { CheckIns } from '../screens/CheckIns';
 import { BusListContext } from '../context/BusListContext';
+import { AlbanyBound } from '../screens/BusList/AlbanyBound';
+import { CityBound } from '../screens/BusList/CityBound';
 
 type MapTabNavigator = StackNavigationProp<BaseStackParamList, 'Map'>
 type MapTabRoute = RouteProp<BaseStackParamList, 'Map'>
@@ -42,9 +44,15 @@ export class MapTab extends React.Component<MapTabProps> {
         }} listeners={({ navigation, route }) => ({
           tabPress: this.handleTap.bind(this)
         })} />
-        <Tab.Screen name="Bus List" component={List} options={{
+
+        <Tab.Screen name="Albany-Bound" component={AlbanyBound} options={{
           tabBarIcon: getIcon('md-list')
         }} />
+
+        <Tab.Screen name="City-Bound" component={CityBound} options={{
+          tabBarIcon: getIcon('md-list')
+        }} />
+        
         <Tab.Screen name="Check-ins" component={CheckIns} options={{
           tabBarIcon: getIcon('md-checkmark-circle')
         }} />
@@ -56,7 +64,6 @@ export class MapTab extends React.Component<MapTabProps> {
     const now = Date.now()
 
     if (this.lastTap && ! this.context.loading) {
-      console.log(now - this.lastTap);
       if ((now - this.lastTap) <= doubleTapDelay) {
         this.context.updateVehicleLocations()
       }

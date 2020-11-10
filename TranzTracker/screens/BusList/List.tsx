@@ -1,5 +1,5 @@
 import React from 'react';
-import { RefreshControl, SectionList, Text, View } from 'react-native';
+import { RefreshControl, SectionList, SectionListData, Text, View } from 'react-native';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
@@ -11,7 +11,9 @@ import { BusData } from '../../interfaces';
 import { BaseStackParamList, MapTabParamList } from '../../navigators';
 import { Page, List as ListStyle } from '../../styles';
 import { BusListItem } from '../../components/BusListItem';
-import { BusDirection } from '../../helpers/functions'
+import { BusDirection, getStopOrder } from '../../helpers/functions'
+
+import * as _ from 'underscore'
 
 export type ListNavigation = CompositeNavigationProp<
   BottomTabNavigationProp<MapTabParamList, 'Bus List'>,
@@ -26,7 +28,9 @@ type ListProps = {
 
 type ListState = {}
 
-export class List extends React.Component<ListProps, ListState> {
+export abstract class List extends React.Component<ListProps, ListState> {
+  abstract direction: BusDirection
+
   static contextType = BusListContext
   context!: React.ContextType<typeof BusListContext>
   
@@ -44,27 +48,41 @@ export class List extends React.Component<ListProps, ListState> {
     );
   }
 
-  render() {
-    const city = this.context.buses
-    .filter(bus => bus.trip.direction_id == BusDirection.City)
-    .sort((a, b) => a.stop_time_update?.stop_sequence - b.stop_time_update?.stop_sequence)
+  getData(): BusData[] {
+    return this.context.buses.filter(bus => bus.trip.direction_id == this.direction)
+  }
 
-    const albany = this.context.buses.filter(bus => bus.trip.direction_id == BusDirection.Albany)
-    .sort((a, b) => a.stop_time_update?.stop_sequence - b.stop_time_update?.stop_sequence)
+  render() {
+    const sections: SectionListData<BusData, {
+      title: string,
+      data: BusData[],
+      seq: number
+    }>[] = []
+
+    Object.entries(_.groupBy(this.getData(), (bus) => {
+      return bus.stop_time_update.stop_id
+    })).forEach(([ stop_id, buses ]) => {
+      const stop = (() => {
+        const stop = this.context.stops.find(stop => {
+          return stop._id == stop_id
+        })
+
+        return stop
+      })()
+
+      sections.push({
+        title: stop ? stop.stop_name : 'Unknown Stop',
+        data: buses,
+        seq: getStopOrder(stop?._id ? stop._id : '', this.direction)
+      })
+    });
 
     return (
       <View style={Page.container}>
         <SectionList
-          sections={[
-            {
-              title: 'City-bound',
-              data: city
-            },
-            {
-              title: 'Albany-bound',
-              data: albany
-            }
-          ]}
+          sections={sections.sort((a, b) => {
+            return (a.seq > b.seq) ? 1 : -1
+          })}
           style={ListStyle.container}
           renderSectionHeader={(info) => (
             <View style={{ ...ListStyle.item, ...ListStyle.headerContainer }}>
