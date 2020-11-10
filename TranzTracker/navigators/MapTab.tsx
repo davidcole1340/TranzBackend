@@ -8,6 +8,7 @@ import { BaseStackParamList } from './Base';
 import { RouteProp } from '@react-navigation/native';
 import { BusData } from '../interfaces';
 import { CheckIns } from '../screens/CheckIns';
+import { BusListContext } from '../context/BusListContext';
 
 type MapTabNavigator = StackNavigationProp<BaseStackParamList, 'Map'>
 type MapTabRoute = RouteProp<BaseStackParamList, 'Map'>
@@ -25,14 +26,22 @@ export type MapTabParamList = {
 }
 
 const Tab = createBottomTabNavigator();
+const doubleTapDelay = 250;
 
 export class MapTab extends React.Component<MapTabProps> {
+  static contextType = BusListContext
+  context!: React.ContextType<typeof BusListContext>
+
+  lastTap?: number
+
   render() {
     return (
       <Tab.Navigator>
         <Tab.Screen name="Map" component={Map} options={{
           tabBarIcon: getIcon('md-map')
-        }} />
+        }} listeners={({ navigation, route }) => ({
+          tabPress: this.handleTap.bind(this)
+        })} />
         <Tab.Screen name="Bus List" component={List} options={{
           tabBarIcon: getIcon('md-list')
         }} />
@@ -41,5 +50,18 @@ export class MapTab extends React.Component<MapTabProps> {
         }} />
       </Tab.Navigator>
     )
+  }
+
+  handleTap() {
+    const now = Date.now()
+
+    if (this.lastTap && ! this.context.loading) {
+      console.log(now - this.lastTap);
+      if ((now - this.lastTap) <= doubleTapDelay) {
+        this.context.updateVehicleLocations()
+      }
+    }
+
+    this.lastTap = now;
   }
 }

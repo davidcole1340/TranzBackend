@@ -1,7 +1,8 @@
 import { Ionicons } from '@expo/vector-icons'
 import { StackHeaderLeftButtonProps } from '@react-navigation/stack'
 import React from 'react'
-import { Text, View } from 'react-native'
+import { ActivityIndicator, Text, View } from 'react-native'
+import { BusListContext, BusListContextType } from '../context/BusListContext'
 import { grey, isDark, Page, Title } from '../styles'
 
 type TitleButtonsProps = {
@@ -19,20 +20,18 @@ function Icon(props: IconProps) {
 }
 
 export class TitleButtons extends React.Component<TitleButtonsProps> {
+  static contextType = BusListContext
+  context!: React.ContextType<typeof BusListContext>
+
   render() {
     return (
       <View style={Title.container}>
-        <View style={Title.buttonContainer}>
+        {/* <View style={Title.buttonContainer}>
           <Icon name="md-bus" />
-        </View>
-
-        <View style={Title.buttonContainer}>
-          <Icon name="md-bus" />
-        </View>
-
-        <View style={Title.buttonContainer}>
-          <Icon name="md-bus" />
-        </View>
+        </View> */}
+        {this.context.loading ? <View style={Title.buttonContainer}>
+          <ActivityIndicator size="large" />
+        </View> : null}
       </View>
     )
   }
