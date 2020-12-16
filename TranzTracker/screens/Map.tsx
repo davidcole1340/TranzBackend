@@ -6,7 +6,7 @@ import { StackNavigationProp } from '@react-navigation/stack'
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs'
 
 import { BusData } from '../interfaces'
-import { Map as Styles } from '../styles'
+import { isDark, Map as Styles } from '../styles'
 import * as Location from '../helpers/location'
 
 import { BusMarker } from '../components'
@@ -14,6 +14,8 @@ import { BusListContext } from '../context/BusListContext'
 import IMap from '../helpers/IMap'
 import { asyncDelay } from '../helpers'
 import { BaseStackParamList, MapTabParamList } from '../navigators'
+import { Platform } from 'react-native'
+import { DarkMode, LightMode } from '../helpers/GoogleMapsStyles'
 
 export type MapNavigation = CompositeNavigationProp<
   BottomTabNavigationProp<MapTabParamList, 'Map'>,
@@ -70,6 +72,7 @@ export class Map extends React.Component<MapProps> {
           latitudeDelta: 0.0922,
           longitudeDelta: 0.0421
         }}
+        customMapStyle={Platform.OS == "android" && isDark ? DarkMode : LightMode}
       >
         {this.context.buses.map((bus: BusData) => (
           <BusMarker key={bus.vehicle.id} bus={bus} navigation={this.props.navigation} ref={marker => {
