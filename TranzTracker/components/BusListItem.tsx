@@ -22,7 +22,7 @@ export class BusListItem extends React.Component<BusListItemProps> {
 
   render() {
     return (
-      <View style={{ ...ListStyle.item, borderColor: getBusColor(this.props.bus, 'white') }}>
+      <View style={{ ...ListStyle.item, borderColor: getBusColor(this.props.bus) }}>
         <View style={ListStyle.row}>
           <Text style={{ ...ListStyle.title, flex: 1 }}>{this.props.bus.vehicle.label}</Text>
           <Text style={{ ...ListStyle.text, flex: 2 }}>{getBusDelay(this.props.bus)}</Text>

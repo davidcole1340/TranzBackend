@@ -10,7 +10,7 @@ import * as Storage from '../../helpers/CheckInStorage'
 import { BusInfoParamList } from "../../navigators";
 import { Page, Table as TableStyle } from '../../styles'
 import { BusData } from "../../interfaces";
-import { getBusDelay, getBusDirection } from "../../helpers";
+import { getBusCapacityString, getBusDelay, getBusDirection, OCCUPANCY_STRINGS } from "../../helpers";
 import { getBusStops } from "../../api";
 import { TripQuery } from "../../interfaces/queries";
 import { GTFSTrip } from "../../interfaces/gtfs";
@@ -134,7 +134,8 @@ export class TripInfo extends React.Component<TripInfoProps, TripInfoState> {
           </View>
         </View>
 
-        <Text style={Page.text}>{getBusDelay(bus)} - {getBusDirection(bus)}</Text>
+        <Text style={Page.text}>{getBusDelay(bus)} - {getBusDirection(bus)}</Text>  
+        <Text style={Page.text}>{OCCUPANCY_STRINGS[bus.occupancy_status ?? 0]}</Text>
 
         <ScrollView>
           {this.renderTable()}

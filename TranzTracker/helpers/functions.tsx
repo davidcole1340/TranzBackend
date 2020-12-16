@@ -151,8 +151,8 @@ export async function asyncDelay(time: number): Promise<void> {
   })
 }
 
-export function getBusColor(bus: BusData, darkModeColor: string = grey): string {
-  if (bus.occupancy_status < 1) return isDark ? darkModeColor : 'black'
+export function getBusColor(bus: BusData): string {
+  if (bus.occupancy_status < 1) return 'aqua';
   else if (bus.occupancy_status < 2) return 'green'
   else if (bus.occupancy_status < 3) return 'orange';
 
