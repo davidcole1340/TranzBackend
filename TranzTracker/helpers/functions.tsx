@@ -21,6 +21,7 @@ const AlbanyBoundStopOrder = [
   3355, // Smales Farm
   3221, // Sunnynook
   4223, // Constellation
+  4225, // Constellation Stop C
   4227, // Albany
   4569 // HBC
 ]
