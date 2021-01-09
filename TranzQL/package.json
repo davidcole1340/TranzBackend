@@ -9,7 +9,7 @@
     "debug": "tsnd --respawn index.ts"
   },
   "author": "David Cole <david.cole1340@gmail.com>",
-  "license": "UNLICENSED",
+  "license": "AGPL-3.0-or-later",
   "dependencies": {
     "bent": "^7.3.12",
     "express": "^4.17.1",

@@ -8,7 +8,7 @@
     "start:watch": "node watch.js"
   },
   "author": "",
-  "license": "ISC",
+  "license": "AGPL-3.0-or-later",
   "dependencies": {
     "bent": "^7.3.10",
     "mongodb": "^3.6.2",
