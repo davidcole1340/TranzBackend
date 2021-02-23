@@ -36,11 +36,11 @@ export class CheckIns extends React.Component<CheckInsProps, CheckInsState> {
 
   getSections() {
     const sections = [];
-    const grouped = _.groupBy(this.state.checkIns, (check) => {
+    const grouped = Object.entries(_.groupBy(this.state.checkIns, (check) => {
       return moment(check.time).startOf('day').format();
-    });
+    })).sort(([adate, a], [bdate, b]) => moment(adate).isBefore(moment(bdate)) ? 1 : -1);
 
-    for (const [date, checkIns] of Object.entries(grouped)) {
+    for (const [date, checkIns] of grouped) {
       sections.push({
         title: moment(date).calendar().split(" ")[0],
         data: checkIns.sort((a, b) => a.time.isBefore(b.time) ? 1 : -1)
