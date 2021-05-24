@@ -23,11 +23,11 @@ const AlbanyBoundStopOrder = [
   4223, // Constellation
   4225, // Constellation Stop C
   4227, // Albany
-  4569 // HBC
+  4981 // HBC
 ]
 
 const CityBoundStopOrder = [
-  4569, // HBC
+  4981, // HBC
   4228, // Albany
   4222, // Constellation
   3219, // Sunnynook
@@ -75,7 +75,7 @@ export function getStopOrder(stop: string, direction: BusDirection): number {
 }
 
 export function getBusDelay(bus: BusData): string {
-  if (! bus.stop_time_update) {
+  if (!bus.stop_time_update) {
     return 'No delay information available'
   }
 
@@ -107,7 +107,7 @@ export function getBusDelay(bus: BusData): string {
 }
 
 export function getBusDirection(bus: BusData): string {
-  if (! bus.trip) {
+  if (!bus.trip) {
     return 'Not in service'
   }
 
@@ -121,7 +121,7 @@ export function getBusDirection(bus: BusData): string {
   return 'Direction unknown';
 }
 
-export function getTime(a: Trip|Break, start: boolean = true): moment.Moment {
+export function getTime(a: Trip | Break, start: boolean = true): moment.Moment {
   const time = (() => {
     if ((a as Trip).time) {
       return (a as Trip).time
