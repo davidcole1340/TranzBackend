@@ -1,6 +1,6 @@
 import { BusData } from './interfaces'
-import { Stop } from './interfaces/gtfs'
-import { ShiftQuery, StopQuery, TripQuery } from './interfaces/queries'
+import { Route, Stop } from './interfaces/gtfs'
+import { RouteQuery, ShiftQuery, StopQuery, TripQuery } from './interfaces/queries'
 import { Shift } from './interfaces/tranzit'
 
 const BASE_API = 'https://dcol542.co/tranzit'
@@ -66,8 +66,8 @@ export async function getShift(bus: BusData): Promise<Shift> {
     }
   }
   `)
-  
-  if (! result.trip) {
+
+  if (!result.trip) {
     throw new Error('Could not find shift via trip id.')
   }
 
@@ -87,4 +87,18 @@ export async function getStops(): Promise<Stop[]> {
   `)
 
   return result.stops
+}
+
+export async function getRoutes(): Promise<Route[]> {
+  const result = await callGraphql<RouteQuery>(`
+  {
+    routes {
+      _id
+      route_long_name
+      route_short_name
+    }
+  }
+  `);
+
+  return result.routes;
 }

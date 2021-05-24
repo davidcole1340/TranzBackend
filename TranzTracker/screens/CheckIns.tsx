@@ -30,11 +30,12 @@ export class CheckIns extends React.Component<CheckInsProps, CheckInsState> {
   updateCheckIns() {
     this.setState({ loading: true })
     Storage.getCheckIns()
-    .then(checkIns => this.setState({ checkIns: checkIns, loading: false }))
-    .then(this.getSections.bind(this));
+      .then(checkIns => this.setState({ checkIns: checkIns, loading: false }))
+      .then(this.getSections.bind(this));
   }
 
   getSections() {
+    console.log(this.state.checkIns);
     const sections = [];
     const grouped = Object.entries(_.groupBy(this.state.checkIns, (check) => {
       return moment(check.time).startOf('day').format();
@@ -52,14 +53,20 @@ export class CheckIns extends React.Component<CheckInsProps, CheckInsState> {
 
   renderItem({ item }: { item: CheckIn }) {
     return (
-      <View style={{ ...ListStyle.item, borderColor: getBusColor(item.bus, 'white')}}>
+      <View style={{ ...ListStyle.item, borderColor: getBusColor(item.bus, 'white') }}>
         <View style={{ ...ListStyle.row }}>
-          <Text style={{...ListStyle.title, flex: 1 }}>{item.bus.vehicle.label}</Text>
+          <Text style={{ ...ListStyle.title, flex: 1 }}>{item.bus.vehicle.label}</Text>
           <Text style={{ ...ListStyle.title, flex: 1, textAlign: 'right' }}>{item.time.calendar()}</Text>
         </View>
         <View style={{ ...ListStyle.row }}>
           <Text style={ListStyle.text}>{this.context.stops.find(stop => stop._id == item.bus.stop_time_update.stop_id)?.stop_name}</Text>
           <Text style={{ ...ListStyle.text, textAlign: 'right' }}>{getBusDirection(item.bus)}</Text>
+        </View>
+        <View style={{ ...ListStyle.row }}>
+          <Text style={ListStyle.text}>{item.bus.trip.start_time}</Text>
+        </View>
+        <View style={{ ...ListStyle.row }}>
+          <Text style={ListStyle.text}>{this.context.routes.find(route => route._id == item.bus.trip.route_id)?.route_long_name}</Text>
         </View>
       </View>
     )
@@ -109,7 +116,7 @@ export class CheckIns extends React.Component<CheckInsProps, CheckInsState> {
             }
           />
         </View>
-      </View> 
+      </View>
     );
   }
 }

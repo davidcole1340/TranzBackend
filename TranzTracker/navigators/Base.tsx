@@ -2,7 +2,7 @@ import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import { BusData } from '../interfaces';
-import { getStops, getVehicleLocations } from '../api';
+import { getRoutes, getStops, getVehicleLocations } from '../api';
 import { BusListContext, BusListContextType } from '../context/BusListContext';
 import { MapTab } from './MapTab';
 import { BusInfo } from './BusInfo'
@@ -25,11 +25,13 @@ export class Base extends React.Component<{}, BusListContextType> {
     loading: false,
     buses: [],
     stops: [],
+    routes: [],
     updateVehicleLocations: this.updateVehicleLocations.bind(this)
   }
 
   componentDidMount() {
     this.updateStops()
+    this.updateRoutes()
   }
 
   updateVehicleLocations() {
@@ -42,15 +44,21 @@ export class Base extends React.Component<{}, BusListContextType> {
     this.setState({ loading: true })
 
     getVehicleLocations()
-    .then((buses: BusData[]) => this.setState({ buses: buses }))
-    .catch((e: Error) => alert(e.message))
-    .finally(() => this.setState({ loading: false }))
+      .then((buses: BusData[]) => this.setState({ buses: buses }))
+      .catch((e: Error) => alert(e.message))
+      .finally(() => this.setState({ loading: false }))
   }
 
   updateStops() {
     getStops()
-    .then((stops) => this.setState({ stops: stops }))
-    .catch((e: Error) => alert(e.message))
+      .then((stops) => this.setState({ stops: stops }))
+      .catch((e: Error) => alert(e.message))
+  }
+
+  updateRoutes() {
+    getRoutes()
+      .then((routes) => this.setState({ routes: routes }))
+      .catch((e: Error) => alert(e.message));
   }
 
   render() {
@@ -61,7 +69,7 @@ export class Base extends React.Component<{}, BusListContextType> {
             title: '',
             headerLeft: (props) => <TitleButtons stackProps={props} />
           }} />
-          <Stack.Screen name="Bus Info" component={BusInfo} /> 
+          <Stack.Screen name="Bus Info" component={BusInfo} />
         </Stack.Navigator>
       </BusListContext.Provider>
     )

@@ -1,4 +1,4 @@
-import { GTFSTrip, Stop } from "./gtfs";
+import { GTFSTrip, Route, Stop } from "./gtfs";
 import { Shift } from "./tranzit";
 
 export type TripQuery = {
@@ -13,4 +13,8 @@ export type ShiftQuery = {
 
 export type StopQuery = {
   stops: Stop[]
+}
+
+export type RouteQuery = {
+  routes: Route[]
 }

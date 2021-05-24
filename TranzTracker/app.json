@@ -2,7 +2,7 @@
   "expo": {
     "name": "TranzTracker",
     "slug": "TranzTracker",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -23,6 +23,10 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "userInterfaceStyle": "automatic"
+    "userInterfaceStyle": "automatic",
+    "description": "",
+    "android": {
+      "package": "com.tranzit.tranztracker"
+    }
   }
 }
