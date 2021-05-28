@@ -10,5 +10,7 @@ async function handleRequest(request) {
   const { fetch_vehicles } = wasm_bindgen;
   await wasm_bindgen(wasm)
   const vehicles = await fetch_vehicles(AT_API_KEY)
-  return new Response(vehicles, { status: 200 })
+  return new Response(vehicles, { status: 200, headers: {
+    'Content-Type': 'application/json'
+  } })
 }
