@@ -52,3 +52,9 @@ export interface Position {
 }
 
 export interface BusData extends TripUpdate_Update, VehiclePosition_Vehicle {}
+
+export interface RealtimeResponse {
+  ok: boolean,
+  error?: string,
+  vehicles?: BusData[]
+}

@@ -1,4 +1,4 @@
-import { BusData } from './interfaces'
+import { BusData, RealtimeResponse } from './interfaces'
 import { Route, Stop } from './interfaces/gtfs'
 import { RouteQuery, ShiftQuery, StopQuery, TripQuery } from './interfaces/queries'
 import { Shift } from './interfaces/tranzit'
@@ -12,8 +12,11 @@ async function callGraphql<T>(query: string): Promise<T> {
 }
 
 export async function getVehicleLocations(): Promise<BusData[]> {
-  const resp = await fetch(`${BASE_API}/vehicles`)
-  return resp.json()
+  const resp = await (await fetch(`${BASE_API}/realtime`)).json() as RealtimeResponse
+  if (!resp.vehicles) {
+    throw new Error(resp.error);
+  }
+  return resp.vehicles
 }
 
 export async function getBusStops(bus: BusData): Promise<TripQuery> {
