@@ -35,7 +35,6 @@ export class CheckIns extends React.Component<CheckInsProps, CheckInsState> {
   }
 
   getSections() {
-    console.log(this.state.checkIns);
     const sections = [];
     const grouped = Object.entries(_.groupBy(this.state.checkIns, (check) => {
       return moment(check.time).startOf('day').format();
