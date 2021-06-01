@@ -11,6 +11,7 @@ import { CheckIns } from '../screens/CheckIns';
 import { BusListContext } from '../context/BusListContext';
 import { AlbanyBound } from '../screens/BusList/AlbanyBound';
 import { CityBound } from '../screens/BusList/CityBound';
+import { List as StopList } from '../screens/Stops/List';
 
 type MapTabNavigator = StackNavigationProp<BaseStackParamList, 'Map'>
 type MapTabRoute = RouteProp<BaseStackParamList, 'Map'>
@@ -52,7 +53,9 @@ export class MapTab extends React.Component<MapTabProps> {
         <Tab.Screen name="City-Bound" component={CityBound} options={{
           tabBarIcon: getIcon('md-list')
         }} />
-        
+
+        <Tab.Screen name="Stops" component={StopList} />
+
         <Tab.Screen name="Check-ins" component={CheckIns} options={{
           tabBarIcon: getIcon('md-checkmark-circle')
         }} />
@@ -63,7 +66,7 @@ export class MapTab extends React.Component<MapTabProps> {
   handleTap() {
     const now = Date.now()
 
-    if (this.lastTap && ! this.context.loading) {
+    if (this.lastTap && !this.context.loading) {
       if ((now - this.lastTap) <= doubleTapDelay) {
         this.context.updateVehicleLocations()
       }
