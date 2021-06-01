@@ -56,8 +56,8 @@ export class Map extends React.Component<MapProps> {
     if (this.map !== null) {
       // Get location and set. If it can't be found, do nothing.
       Location.getRegionLocation()
-      .then(region => this.map?.animateToRegion(region))
-      .catch()
+        .then(region => this.map?.animateToRegion(region))
+        .catch(e => console.error(e))
     }
   }
 
@@ -76,7 +76,7 @@ export class Map extends React.Component<MapProps> {
       >
         {this.context.buses.map((bus: BusData) => (
           <BusMarker key={bus.vehicle.id} bus={bus} navigation={this.props.navigation} ref={marker => {
-            if (marker) {2
+            if (marker) {
               this.markers.push(marker)
             }
           }} />
