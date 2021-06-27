@@ -7,6 +7,8 @@ gtfs
 .DS_Store
 .env
 
+Migrator/*.pdf
+
 # OSX
 #
 .DS_Store
