@@ -29,10 +29,10 @@ const files = [
     fileName: 'weekend.pdf',
     shiftType: 1
   },
-  {
-    fileName: 'schoolhol.pdf',
-    shiftType: 2
-  }
+  //{
+    //fileName: 'schoolhol.pdf',
+    //shiftType: 2
+  //}
 ];
 
 let splitids = {};
