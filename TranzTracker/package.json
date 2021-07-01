@@ -40,7 +40,7 @@
     "@types/react-native": "~0.63.2",
     "@types/react-native-table-component": "^1.2.0",
     "react-native-web": "~0.13.7",
-    "typescript": "~3.9.2"
+    "typescript": "~4.3.5"
   },
   "private": true
 }
