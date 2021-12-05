@@ -1,4 +1,4 @@
-import { IResolvers } from "graphql-tools";
+import { IResolvers } from "@graphql-tools/utils";
 import { Db } from "mongodb";
 
 export const tranzResolvers = (db: Db, gtfsDb: Db): IResolvers => ({

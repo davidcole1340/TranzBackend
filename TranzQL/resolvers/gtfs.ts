@@ -1,10 +1,9 @@
-import { IResolvers } from "graphql-tools";
+import { IResolvers } from "@graphql-tools/utils";
 import { Db } from "mongodb";
 
 const { HOLIDAY_TIMETABLE } = process.env
 
 interface Calendar {
-  _id: string,
   start_date: string,
   end_date: string,
   monday: boolean,
@@ -59,15 +58,17 @@ export const gtfsResolvers = (tranzDb: Db, db: Db): IResolvers => ({
     },
 
     shift: async (trip) => {
-      const calendar: Calendar = await db.collection('calendar').findOne({
-        _id: trip.service_id
-      }) as Calendar
+      const raise = (msg: string) => {
+        throw new Error(msg)
+      }
 
+      const calendar = await db.collection<Calendar>('calendar').findOne({_id: trip.service_id}) ?? raise('Could not find calendar entry');
       const route_id: string = trip.route_id.split('-')[0]
       const firstStop = await db.collection('stop_times').findOne({
         trip_id: trip._id,
         stop_sequence: 1
-      })
+      }) ?? raise('Could not find stop time entry')
+
       const shiftType: 0|1|2 = (() => {
         if (calendar.monday && calendar.tuesday && calendar.wednesday && calendar.thursday && calendar.thursday) {
           if (calendar.saturday && calendar.sunday) {

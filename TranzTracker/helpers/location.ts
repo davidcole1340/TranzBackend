@@ -28,7 +28,7 @@ export async function getRegionLocation(): Promise<Region> {
  * throw an error.
  */
 export async function getLocation(): Promise<LocationObject> {
-  const { status } = await ExpoLocation.requestPermissionsAsync();
+  const { status } = await ExpoLocation.requestForegroundPermissionsAsync();
   if (status !== 'granted') {
     throw new Error('Did not get permission to get location.')
   }

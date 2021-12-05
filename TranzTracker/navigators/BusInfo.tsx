@@ -39,7 +39,7 @@ export class BusInfo extends React.Component<BusInfoProps> {
     return (
       <Tab.Navigator>
         <Tab.Screen name="Trip" component={TripInfo} initialParams={this.props.route.params} options={{
-          tabBarIcon: getIcon('md-paper')
+          tabBarIcon: getIcon('newspaper')
         }} />
         <Tab.Screen name="Shift" component={ShiftInfo} initialParams={this.props.route.params} options={{
           tabBarIcon: getIcon('md-bus')

@@ -101,7 +101,7 @@ const atClient = bent(`https://api.at.govt.nz/v2/public/realtime/`, 'GET', 'json
 export const getBusData = async (): Promise<BusData[]> => {
   let response: Array<BusData> = [];
 
-  const [tripUpdates, positionUpdates] = await Promise.all<APIResponse<TripUpdate>, APIResponse<VehiclePosition>>([
+  const [tripUpdates, positionUpdates] = await Promise.all([
     atClient(`tripupdates?vehicleid=${busIds}`) as Promise<APIResponse<TripUpdate>>,
     atClient(`vehiclelocations?vehicleid=${busIds}`) as Promise<APIResponse<VehiclePosition>>
   ]);

@@ -26,15 +26,19 @@ import {
 import fs from "fs"
 import { MongoClient } from "mongodb";
 import { tranzResolvers, gtfsResolvers, getBusData } from './resolvers'
-import { IResolvers, makeExecutableSchema } from "graphql-tools";
+import {  makeExecutableSchema } from "graphql-tools";
 import merge from "lodash.merge"
 import { checkVersions } from "./watch";
+import { IResolvers } from "@graphql-tools/utils";
 
 const app = express();
 const uri = `mongodb://${MONGO_HOST}:27017`;
 const hour = 1000 * 60 * 60; // 1 hour
 
-MongoClient.connect(uri, { useUnifiedTopology: true }).then((client) => {
+const client = new MongoClient(uri);
+
+const main = async () => {
+  await client.connect();
   const tranzDb = client.db(MONGO_DB);
   const gtfsDb = client.db(MONGO_GTFS_DB);
 
@@ -85,4 +89,12 @@ MongoClient.connect(uri, { useUnifiedTopology: true }).then((client) => {
     const httpsServer = https.createServer(creds, app);
     httpsServer.listen(443, () => console.log('https server listening on 443'));
   }
-}).catch(console.error)
+}
+
+try {
+  main()
+} catch (e) {
+  console.dir(e)
+} finally {
+  client.close()
+}
