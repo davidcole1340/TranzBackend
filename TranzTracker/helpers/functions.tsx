@@ -13,8 +13,8 @@ export enum BusDirection {
 
 const AlbanyBoundStopOrder = [
   7089, // Wellesley near AUT
-  1364, // Mayoral Dr
-  1090, // Wellesley St
+  7086, // Wellesley St near Civic
+  1088, // Wellesley St near Albion Hotel
   1334, // Halsey St
   7036, // Vic Park
   4063, // Akoranga
@@ -35,9 +35,9 @@ const CityBoundStopOrder = [
   4065, // Akoranga
   7037, // Fanshawe
   1319, // Halsey St
-  1079, // Wellesley St
-  7082, // Hobson St
-  1318, // Mayoral Dr
+  1089, // 79 Wellesley St
+  7001, // 21 Wellesley St
+  7039, // Mayoral Dr at AUT
   7128, // Wakefield St
   7147, // Symonds St
 ]
