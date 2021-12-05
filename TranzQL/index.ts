@@ -34,50 +34,45 @@ const client = new MongoClient(uri);
 
 const main = async () => {
   await client.connect();
+  const tranzDb = client.db(MONGO_DB);
+  const gtfsDb = client.db(MONGO_GTFS_DB);
 
-  try {
-    const tranzDb = client.db(MONGO_DB);
-    const gtfsDb = client.db(MONGO_GTFS_DB);
+  checkVersions(gtfsDb);
+  setInterval(() => checkVersions(gtfsDb), 1 * hour);
 
-    checkVersions(gtfsDb);
-    setInterval(() => checkVersions(gtfsDb), 1 * hour);
+  const typeDefs: string = (() => {
+    const files = fs.readdirSync('./schema')
+    let content = '';
 
-    const typeDefs: string = (() => {
-      const files = fs.readdirSync('./schema')
-      let content = '';
+    for (const file of files) {
+      content += fs.readFileSync('./schema/'+file).toString()
+    }
 
-      for (const file of files) {
-        content += fs.readFileSync('./schema/'+file).toString()
-      }
+    return content;
+  })();
 
-      return content;
-    })();
+  const resolvers: IResolvers = merge(tranzResolvers(tranzDb, gtfsDb), gtfsResolvers(tranzDb, gtfsDb));
 
-    const resolvers: IResolvers = merge(tranzResolvers(tranzDb, gtfsDb), gtfsResolvers(tranzDb, gtfsDb));
+  app.use('/graphql', graphqlHTTP({
+    graphiql: process.env.NODE_ENV === 'development',
+    schema: makeExecutableSchema({
+      typeDefs,
+      resolvers
+    })
+  }))
 
-    app.use('/graphql', graphqlHTTP({
-      graphiql: process.env.NODE_ENV === 'development',
-      schema: makeExecutableSchema({
-        typeDefs,
-        resolvers
-      })
-    }))
-
-    app.get('/vehicles', (req, res) => {
-      getBusData().then(data => {
-        res.send(data);
-      }).catch((e: Error) => {
-        res.status(500).send({
-          error: e.message
-        });
+  app.get('/vehicles', (req, res) => {
+    getBusData().then(data => {
+      res.send(data);
+    }).catch((e: Error) => {
+      res.status(500).send({
+        error: e.message
       });
     });
+  });
 
-    const httpServer = http.createServer(app);
-    httpServer.listen(8080, () => console.log(`Listening on port 8080`));
-  } finally {
-    await client.close()
-  }
+  const httpServer = http.createServer(app);
+  httpServer.listen(8080, () => console.log(`Listening on port 8080`));
 }
 
 main().catch(console.dir)
