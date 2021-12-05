@@ -15,7 +15,7 @@
     "bent": "^7.3.12",
     "express": "^4.17.1",
     "express-graphql": "^0.12.0",
-    "graphql": "^16.0.1",
+    "graphql": "^15.4.0",
     "graphql-tools": "^8.2.0",
     "lodash.merge": "^4.6.2",
     "mongodb": "^4.2.1"
