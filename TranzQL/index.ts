@@ -3,8 +3,6 @@ declare var process: {
     MONGO_HOST: string,
     MONGO_DB: string,
     MONGO_GTFS_DB: string,
-    TRANZQL_PORT: number,
-    SSL_KEY_PATH: string|undefined,
     NODE_ENV: 'development' | 'production'
   }
 }
@@ -13,8 +11,6 @@ const {
   MONGO_HOST,
   MONGO_DB,
   MONGO_GTFS_DB,
-  TRANZQL_PORT,
-  SSL_KEY_PATH
 } = process.env;
 
 import http from "http"
@@ -77,18 +73,7 @@ const main = async () => {
   });
 
   const httpServer = http.createServer(app);
-  httpServer.listen(TRANZQL_PORT, () => console.log(`Listening on port ${TRANZQL_PORT}`));
-
-  if (SSL_KEY_PATH && SSL_KEY_PATH !== '') {
-    const creds: https.ServerOptions = {
-      key: fs.readFileSync(`${SSL_KEY_PATH}/privkey.pem`, 'utf8'),
-      cert: fs.readFileSync(`${SSL_KEY_PATH}/cert.pem`, 'utf8'),
-      ca: fs.readFileSync(`${SSL_KEY_PATH}/fullchain.pem`, 'utf8')
-    }
-
-    const httpsServer = https.createServer(creds, app);
-    httpsServer.listen(443, () => console.log('https server listening on 443'));
-  }
+  httpServer.listen(8080, () => console.log(`Listening on port 8080`));
 }
 
 try {
